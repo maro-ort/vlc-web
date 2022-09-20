@@ -1,26 +1,39 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { createContext, FC, ReactNode } from 'react'
+import FileBrowser from './FileBrowser'
+import Playlist from './Playlist'
+import './scss/main.scss'
 
-function App() {
+import VLC from './vlc'
+import Controls from './vlc/Controls'
+
+export const AppCtx = createContext({
+  vlc: new VLC()
+})
+
+const AppProvider: FC<{ children: ReactNode }> = ({ children }) => {
+  const vlc = new VLC()
+
+  const value = {
+    vlc
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <AppCtx.Provider value={value}>
+      {children}
+    </AppCtx.Provider>
+  )
 }
 
-export default App;
+const App: FC<{}> = () => {
+  return (
+    <AppProvider>
+      <div id='drawer'>
+        <FileBrowser />
+        <Playlist />
+      </div>
+      <Controls />
+    </AppProvider>
+  )
+}
+
+export default App
