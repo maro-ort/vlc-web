@@ -23,10 +23,10 @@ const AppProvider: FC<{ children: ReactNode }> = ({ children }) => {
 const App: FC<{}> = () => {
   return (
     <AppProvider>
-      <div id="drawer">
-        <FileBrowser />
-        <Playlist />
-      </div>
+      {/* <div id="drawer"> */}
+      <Playlist />
+      <FileBrowser />
+      {/* </div> */}
       <Controls />
     </AppProvider>
   )

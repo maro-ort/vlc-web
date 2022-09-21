@@ -1,0 +1,35 @@
+#filebrowser {
+
+  .filebrowser {
+    &__items {
+      table-layout: fixed;
+      width: 100%;
+    }
+
+    &__item {
+      border: 1px solid black;
+      display: flex;
+      justify-content: space-between;
+
+      &.dir {
+        background-color: var(--color-dark);
+      }
+
+      &-name {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        transition: all .3s;
+        // text-align: left;
+        white-space: nowrap;
+        width: 100%;
+
+        &:hover {
+          color: var(--color-lighter);
+        }
+
+      }
+    }
+
+
+  }
+}
