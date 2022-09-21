@@ -7,27 +7,23 @@ import VLC from './vlc'
 import Controls from './vlc/Controls'
 
 export const AppCtx = createContext({
-  vlc: new VLC()
+  vlc: new VLC(),
 })
 
 const AppProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const vlc = new VLC()
 
   const value = {
-    vlc
+    vlc,
   }
 
-  return (
-    <AppCtx.Provider value={value}>
-      {children}
-    </AppCtx.Provider>
-  )
+  return <AppCtx.Provider value={value}>{children}</AppCtx.Provider>
 }
 
 const App: FC<{}> = () => {
   return (
     <AppProvider>
-      <div id='drawer'>
+      <div id="drawer">
         <FileBrowser />
         <Playlist />
       </div>

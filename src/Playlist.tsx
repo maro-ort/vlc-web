@@ -1,9 +1,7 @@
 import React, { FC } from 'react'
 
 const Playlist: FC<{}> = () => {
-  return (
-    <section id='playlist' />
-  )
+  return <section id="playlist" />
 }
 
 export default Playlist
