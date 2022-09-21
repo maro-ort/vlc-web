@@ -1,5 +1,6 @@
 @import './vars.scss';
 
+@import './buttons.scss';
 @import './filebrowser.scss';
 
 
@@ -18,7 +19,7 @@ html, body, #root {
 
   display: grid;
   grid-template-columns: 400px auto;
-  grid-template-rows: auto 300px;
+  grid-template-rows: auto max-content;
 
   // display: flex;
   // flex-direction: column;

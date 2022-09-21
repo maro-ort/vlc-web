@@ -1,0 +1,23 @@
+button, .button {
+  background-color: transparent;
+  border: 2px solid var(--color-light);
+  border-radius: 5px;
+  color: var(--color-light);
+  margin: .1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  line-height: 3rem;
+  width: 3rem;
+  height: 3rem;
+  transition: all .3s;
+  vertical-align: top;
+  padding: .75rem;
+
+  &:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    cursor: pointer;
+  }
+}

@@ -1,6 +1,8 @@
 const sendCommand = async <T>(params: Record<string, string> = {}, path: string = 'status'): Promise<T> => {
   const query = new URLSearchParams(params)
 
+  console.log(`/requests/${path}.json?${query.toString()}`)
+
   return await fetch(`/requests/${path}.json?${query.toString()}`, {
     headers: {
       Authorization: 'Basic ' + btoa(':pass'),
@@ -37,7 +39,7 @@ class Browser {
           gid: 1001,
           uri: 'file:///home/aumon/downloasds/movies/The%20Lord%20of%20the%20Rings%20The%20Fellowship%20of%20the%20Ring%20THEATRICAL%20EDITION%20%282001%29%20%5B1080p%5D/The.Lord.of.the.Rings.The.Fellowship.of.the.Rings.THEATRICAL.EDITION.2001.1080p.BrRip.x264.BOKUTOX.YIFY.mp4',
           path: '/home/aumon/downloads/movies/The Lord of the Rings The Fellowship of the Ring THEATRICAL EDITION (2001) [1080p]/The.Lord.of.the.Rings.The.Fellowship.of.the.Rings.THEATRICAL.EDITION.2001.1080p.BrRip.x264.BOKUTOX.YIFY.mp4',
-          name: 'The.Lord.of.the.Rings.The.Fellowship.of.the.Rings.THEATRICAL.EDITION.2001.1080p.BrRip.x264.BOKUTOX.YIFY.mp4',
+          name: 'Dir ' + (Math.random() * 10).toFixed(),
           creation_time: 1660026411,
           type: 'dir',
           mode: 33188,
@@ -205,8 +207,9 @@ class Playlist {
     })
   }
 
-  queue(uri: string): void {
-    void sendCommand({ command: 'in_enqueue', input: uri })
+  async queue(uri: string | string[]): Promise<void> {
+    if (typeof uri === 'string') uri = [uri]
+    for (const input of uri) await sendCommand({ command: 'in_enqueue', input })
   }
 }
 

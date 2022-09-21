@@ -1,19 +1,32 @@
-import React, { FC, SetStateAction, useCallback, useContext, useEffect, useState } from 'react'
+import React, { FC, useCallback, useContext, useEffect, useState } from 'react'
 import cx from 'classnames'
 
 import { AppCtx } from './App'
 
+import { ReactComponent as PlaySvg } from './svg/play.svg'
+
+type ItemListType = {
+  parent?: BrowserItem
+  dirs: BrowserItem[]
+  files: BrowserItem[]
+}
+
 const DirItem: FC<{
   file: BrowserItem
-}> = ({ file }) => {
+  browseTo: (path: string) => void
+}> = ({ file, browseTo }) => {
   return (
     <>
-      <td>
-        <p>dir</p>
+      <td onClick={() => browseTo(file.path)} title={file.name}>
+        
       </td>
-      <td className="filebrowser__item-name">{file.name}</td>
+      <td className="filebrowser__item-name" onClick={() => browseTo(file.path)} title={file.name}>
+        {file.name}
+      </td>
       <td>
-        <button>▶</button>
+        <button>
+          <PlaySvg />
+        </button>
       </td>
     </>
   )
@@ -27,13 +40,15 @@ const FileItem: FC<{
   return (
     <>
       <td onClick={() => toggleSelectUri(file.uri)}>
-        <input type="checkbox" value={file.uri} checked={selectedUris.includes(file.uri)} />
+        <input type="checkbox" value={file.uri} checked={selectedUris.includes(file.uri)} readOnly />
       </td>
-      <td className="filebrowser__item-name" onClick={() => toggleSelectUri(file.uri)}>
+      <td className="filebrowser__item-name" onClick={() => toggleSelectUri(file.uri)} title={file.name}>
         {file.name}
       </td>
       <td>
-        <button>▶</button>
+        <button>
+          <PlaySvg />
+        </button>
       </td>
     </>
   )
@@ -41,27 +56,37 @@ const FileItem: FC<{
 
 const FileBrowser: FC<{}> = () => {
   const { vlc } = useContext(AppCtx)
-  const [files, setFiles] = useState<BrowserItem[]>([])
+  const [allSelected, setAllSelected] = useState(false)
+  const [path, setPath] = useState('/')
+  const [itemList, setItemList] = useState<ItemListType>({
+    dirs: [],
+    files: [],
+  })
   const [selectedUris, setSelectedUris] = useState<string[]>([])
 
   /**
    * File management
    */
-  const updateFiles = useCallback(
-    (path?: string) => {
-      void vlc.browser
-        .fakeDir(path || '/')
-        .then(f =>
-          f.sort((a, b) => {
-            if (a.name === '..') return -1
-            else if (a.type === b.type) return a.name.localeCompare(b.name)
-            return a.type.localeCompare(b.type)
-          })
+
+  const browseTo = (path: string) => setPath(path)
+
+  const updateFiles = useCallback(() => {
+    void vlc.browser
+      .fakeDir(path)
+      .then(f => f.sort((a, b) => (a.type === b.type ? a.name.localeCompare(b.name) : a.type.localeCompare(b.type))))
+      .then(f =>
+        f.reduce(
+          (acc, file) => {
+            if (file.name === '..') acc.parent = file
+            else if (file.type === 'dir') acc.dirs.push(file)
+            else if (file.type === 'file') acc.files.push(file)
+            return acc
+          },
+          { dirs: [], files: [] } as ItemListType
         )
-        .then(setFiles)
-    },
-    [vlc]
-  )
+      )
+      .then(setItemList)
+  }, [path, vlc.browser])
 
   useEffect(() => updateFiles, [updateFiles])
 
@@ -71,43 +96,46 @@ const FileBrowser: FC<{}> = () => {
 
   const toggleSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { checked } = e.target
-    // if (!checked)
+    if (checked) {
+      setSelectedUris(itemList.files.map(({ uri }) => uri))
+      setAllSelected(true)
+    } else {
+      setSelectedUris([])
+      setAllSelected(false)
+    }
   }
 
   const toggleSelectUri = useCallback(
     (uri: string) => {
-      console.log('aaa')
-
       const checked = selectedUris.includes(uri)
-      console.log({ checked })
-
       if (checked) setSelectedUris(selectedUris.filter(v => v !== uri))
       else setSelectedUris([...selectedUris, uri])
+      setAllSelected(false)
     },
     [selectedUris]
   )
 
-  const queueSelected = () => {}
-
   return (
     <div id="filebrowser">
       <div className="filebrowser__actions">
-        <input type="checkbox" onChange={toggleSelectAll} />
-        <button onClick={queueSelected}>▶</button>
+        <input type="checkbox" onChange={toggleSelectAll} checked={allSelected} />
+        <button onClick={() => vlc.playlist.queue(selectedUris)}>
+          <PlaySvg />
+        </button>
+        <button onClick={() => itemList.parent && browseTo(itemList.parent.uri)}>↑</button>
       </div>
       <table className="filebrowser__items">
         <tbody>
-          {files.map((file, i) => {
-            const itemComponent = {
-              dir: <DirItem file={file} />,
-              file: <FileItem file={file} selectedUris={selectedUris} toggleSelectUri={toggleSelectUri} />,
-            }[file.type]
-            return (
-              <tr key={i} className={cx('filebrowser__item', file.type)}>
-                {itemComponent}
-              </tr>
-            )
-          })}
+          {itemList.dirs.map((file, i) => (
+            <tr key={i} className={cx('filebrowser__item', file.type)}>
+              <DirItem file={file} browseTo={browseTo} />
+            </tr>
+          ))}
+          {itemList.files.map((file, i) => (
+            <tr key={i} className={cx('filebrowser__item', file.type)}>
+              <FileItem file={file} selectedUris={selectedUris} toggleSelectUri={toggleSelectUri} />
+            </tr>
+          ))}
         </tbody>
       </table>
       <pre style={{ width: '200px' }}>{JSON.stringify({ selectedUris }, null, 2)}</pre>
