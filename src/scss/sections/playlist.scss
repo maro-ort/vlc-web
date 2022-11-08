@@ -1,7 +1,13 @@
 #playlist {
-  background-color: rgb(121, 89, 89);
-  box-sizing: border-box;
-  overflow-x: hidden;
-  overflow-y: auto;
-  padding: 20px;
+
+  .playlist {
+    &__items {
+      background-color: rgb(121, 89, 89);
+      box-sizing: border-box;
+      overflow-x: hidden;
+      overflow-y: auto;
+      padding: 20px;
+
+    }
+  }
 }

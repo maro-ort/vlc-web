@@ -8,13 +8,19 @@ import Controls from '@ui/Controls'
 
 export const AppCtx = createContext({
   vlc: new VLC(),
+  DEFAULT_PATH: '/home/aumon',
 })
 
 const AppProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const vlc = new VLC()
 
+  const DEFAULT_PATH = localStorage.getItem('vlc-path')
+
+  if (!DEFAULT_PATH) localStorage.setItem('vlc-path', '/home/aumon')
+
   const value = {
     vlc,
+    DEFAULT_PATH: DEFAULT_PATH ?? '/home/aumon',
   }
 
   return <AppCtx.Provider value={value}>{children}</AppCtx.Provider>

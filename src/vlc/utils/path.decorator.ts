@@ -1,3 +1,5 @@
+// TODO: REMOVE file
+
 export const pathDecorator = (path: string): string => {
   // Replace /home/* with ~/*
   if (path.startsWith('/home/')) {

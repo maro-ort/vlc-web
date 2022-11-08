@@ -1,21 +1,17 @@
 $grid-gap: 1em;
-$item-margin: .5em 1em;
 
 #filebrowser {
   .filebrowser {
     &__actions {
       align-items: end;
+      border-bottom: 1px solid var(--color-light);
       display: grid;
       grid-gap: $grid-gap;
-      grid-template-columns: 1fr auto;
-      margin: $item-margin;
+      grid-template-columns: 1fr auto auto;
+      padding: $grid-gap / 2 $grid-gap;
     }
 
-    &__current {
-      word-wrap: anywhere;
-    }
-
-    &__path {
+    &__breadcrumbs {
       justify-content: space-between;
       display: flex;
       flex-direction: column;
@@ -27,33 +23,60 @@ $item-margin: .5em 1em;
 
     }
 
+    &__current {
+      font-size: 1.5em;
+      word-wrap: anywhere;
+    }
+
     &__items {
       overflow-y: scroll;
       max-height: 100%;
     }
 
     &__item {
+      border-bottom: 1px solid var(--color-dark);
       display: grid;
+      cursor: pointer;
       grid-gap: $grid-gap;
       grid-template-columns: 1fr auto;
-      margin: $item-margin;
+      margin: $grid-gap / 2 $grid-gap;
+      padding-bottom: $grid-gap / 2;
+
+      &:hover {
+        color: var(--color-accent);
+      }
 
       &.dir {
-        background-color: var(--color-dark);
+        // background-color: var(--color-black);
       }
 
       &-name {
         overflow: hidden;
         text-overflow: ellipsis;
-        transition: all .3s;
+        transition: all .1s;
         // text-align: left;
         white-space: nowrap;
         width: 100%;
 
-        &:hover {
-          color: var(--color-lighter);
-        }
 
+      }
+    }
+
+    &__parents {
+      align-items: center;
+      display: flex;
+
+      div {
+        cursor: pointer;
+        font-weight: bold;
+        padding: 0 .5em;
+
+        &:first-child { padding-left: 0;}
+        &:last-child { padding-right: 0;}
+
+        &:hover {
+          color: var(--color-accent);
+        }
       }
     }
   }

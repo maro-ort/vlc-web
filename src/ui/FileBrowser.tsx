@@ -3,8 +3,6 @@ import cx from 'classnames'
 
 import { AppCtx } from '@src/App'
 
-import { pathDecorator } from '@vlc/utils/path.decorator'
-
 import { ReactComponent as PlaySvg } from '@svg/play.svg'
 
 type ItemListType = {
@@ -13,13 +11,36 @@ type ItemListType = {
   files: BrowserItem[]
 }
 
-const Path: FC<{ path: string }> = ({ path }) => {
-  const tree = path.split('/')
-  const current = tree.pop() // NOTE: tree has mutated
+const Breadcrumbs: FC<{ path: string; browseTo: (path: string) => void }> = ({ path, browseTo }) => {
+  // Replace /home/* with ~/*
+  // if (path.startsWith('/home/')) {
+  //   path = path.replace(/^\/home\//, '~')
+  // const homeRegex = /^\/home\/([^\\/]+)/
+  // }
+  // Shorten folder names
+  const breadcrumbs = path.split('/').filter(Boolean)
+  const current = breadcrumbs.pop() // NOTE: breadcrumbs has mutated
+
+  const links = breadcrumbs.map((v, i) => ({
+    name: v.slice(0, 2),
+    path: '/' + breadcrumbs.slice(0, i + 1).join('/'),
+  }))
 
   return (
-    <div className="filebroweser__path">
-      <div className="filebrowser__parents">{pathDecorator(tree.join('/'))}</div>
+    <div className="filebroweser__breadcrumbs">
+      <div className="filebrowser__parents">
+        {links
+          .map((v, i) => (
+            <div key={i} onClick={() => browseTo(v.path)} title={v.path}>
+              {v.name}
+            </div>
+          ))
+          .reduce((acc, c) => (
+            <>
+              {acc}/{c}
+            </>
+          ))}
+      </div>
       <div className="filebrowser__current">{current}</div>
     </div>
   )
@@ -63,8 +84,8 @@ const FileItem: FC<{
 }
 
 const FileBrowser: FC<{}> = () => {
-  const { vlc } = useContext(AppCtx)
-  const [path, setPath] = useState('/')
+  const { vlc, DEFAULT_PATH } = useContext(AppCtx)
+  const [path, setPath] = useState(DEFAULT_PATH)
   const [itemList, setItemList] = useState<ItemListType>({
     dirs: [],
     files: [],
@@ -107,7 +128,8 @@ const FileBrowser: FC<{}> = () => {
   return (
     <div id="filebrowser">
       <div className="filebrowser__actions">
-        <Path path={path} />
+        <Breadcrumbs browseTo={browseTo} path={path} />
+        <div>{itemList.files?.length > 0 && <button title="Add all files">📂</button>}</div>
         <button onClick={browseToParent}>↑</button>
       </div>
       <div className="filebrowser__items">

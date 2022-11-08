@@ -1,12 +1,14 @@
-$grey-dark: #666;
-$grey-darker: #333;
-$grey-light: #aaa;
-$grey-lighter: #eee;
+$grey-black: rgb(17, 17, 17);
+$grey-dark: rgb(102, 102, 102); //#666;
+$grey-darker: rgb(51, 51, 51); //#333;
+$grey-light: rgb(170, 170, 170);
+$grey-lighter: rgb(238, 238, 238);
 
 $accent: #6db966;
 
 :root {
   --color-accent: #{$accent};
+  --color-black: #{$grey-black};
   --color-dark: #{$grey-dark};
   --color-darker: #{$grey-darker};
   --color-light: #{$grey-light};

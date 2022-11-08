@@ -1,5 +1,5 @@
 export const browseData: Record<string, ResponseBrowserDir> = {
-  '/': {
+  '~': {
     element: [
       {
         uid: 0,
