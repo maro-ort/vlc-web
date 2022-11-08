@@ -31,12 +31,12 @@ const DirItem: FC<{
 }> = ({ file, browseTo }) => {
   return (
     <>
-      <td className="filebrowser__item-name" onClick={browseTo} title={file.name}>
+      <div className="filebrowser__item-name" onClick={browseTo} title={file.name}>
         {file.name}
-      </td>
-      <td onClick={browseTo} title={file.name}>
+      </div>
+      <div onClick={browseTo} title={file.name}>
         <button title="Open folder">📂</button>
-      </td>
+      </div>
     </>
   )
 }
@@ -49,15 +49,15 @@ const FileItem: FC<{
 
   return (
     <>
-      <td className="filebrowser__item-name" title={file.name}>
+      <div className="filebrowser__item-name" title={file.name}>
         {file.name}
         <div>{extension}</div>
-      </td>
-      <td>
+      </div>
+      <div>
         <button onClick={() => addToPlaylist(file)} title={`Add ${file.name} to pplaylist`}>
           <PlaySvg />
         </button>
-      </td>
+      </div>
     </>
   )
 }
@@ -110,20 +110,18 @@ const FileBrowser: FC<{}> = () => {
         <Path path={path} />
         <button onClick={browseToParent}>↑</button>
       </div>
-      <table className="filebrowser__items">
-        <tbody>
-          {itemList.dirs.map((file, i) => (
-            <tr key={i} className={cx('filebrowser__item', file.type)}>
-              <DirItem file={file} browseTo={() => browseTo(file.path)} />
-            </tr>
-          ))}
-          {itemList.files.map((file, i) => (
-            <tr key={i} className={cx('filebrowser__item', file.type)}>
-              <FileItem file={file} addToPlaylist={addToPlaylist} />
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <div className="filebrowser__items">
+        {itemList.dirs.map((file, i) => (
+          <div key={i} className={cx('filebrowser__item', file.type)}>
+            <DirItem file={file} browseTo={() => browseTo(file.path)} />
+          </div>
+        ))}
+        {itemList.files.map((file, i) => (
+          <div key={i} className={cx('filebrowser__item', file.type)}>
+            <FileItem file={file} addToPlaylist={addToPlaylist} />
+          </div>
+        ))}
+      </div>
     </div>
   )
 }

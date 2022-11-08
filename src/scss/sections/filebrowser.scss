@@ -2,17 +2,13 @@ $grid-gap: 1em;
 $item-margin: .5em 1em;
 
 #filebrowser {
-  max-width: 100%;
-
   .filebrowser {
-
     &__actions {
       align-items: end;
       display: grid;
       grid-gap: $grid-gap;
       grid-template-columns: 1fr auto;
       margin: $item-margin;
-
     }
 
     &__current {
@@ -32,9 +28,8 @@ $item-margin: .5em 1em;
     }
 
     &__items {
-      border-collapse: collapse;
-      table-layout: fixed;
-      width: 100%;
+      overflow-y: scroll;
+      max-height: 100%;
     }
 
     &__item {
@@ -61,7 +56,5 @@ $item-margin: .5em 1em;
 
       }
     }
-
-
   }
 }

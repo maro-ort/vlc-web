@@ -16,24 +16,31 @@ html, body, #root {
 }
 
 #root {
-
   display: grid;
-  grid-template-columns: 400px auto;
-  grid-template-rows: auto max-content;
+  grid-template-rows: 1fr max-content;
+  max-height: 100vh;
 
-  // display: flex;
-  // flex-direction: column;
+  #drawer {
+    display: flex;
+    flex-grow: 1;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
 
-  // #drawer {
-  //   display: grid;
-  //   flex-grow: 1;
-  //   grid-template-columns: auto 400px;
-  // }
+    #playlist {
+      flex-grow: 1;
+    }
+
+    #filebrowser {
+      display: flex;
+      flex-direction: column;
+      max-width: 800px;
+    }
+  }
 }
 
 
 #controls {
   background-color: purple;
-  height: 100%;
-  grid-column: span 2;
+  padding: 16px;
 }
