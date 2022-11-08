@@ -1,7 +1,7 @@
+import { browseData } from '@src/data/browse.data'
+
 const sendCommand = async <T>(params: Record<string, string> = {}, path: string = 'status'): Promise<T> => {
   const query = new URLSearchParams(params)
-
-  console.log(`/requests/${path}.json?${query.toString()}`)
 
   return await fetch(`/requests/${path}.json?${query.toString()}`, {
     headers: {
@@ -16,114 +16,7 @@ class Browser {
   }
 
   async fakeDir(uri: string): Promise<BrowserItem[]> {
-    const ResponseBrowserDirExample: ResponseBrowserDir = {
-      element: [
-        {
-          access_time: 1658941568,
-          modification_time: 1660071335,
-          size: 4096,
-          uid: 1000,
-          gid: 1001,
-          uri: 'file:///home/aumon/',
-          path: '/home/aumon/downloads/..',
-          name: '..',
-          creation_time: 1660071335,
-          type: 'dir',
-          mode: 16840,
-        },
-        {
-          access_time: 1660025972,
-          modification_time: 1660026411,
-          size: 2580263063,
-          uid: 1000,
-          gid: 1001,
-          uri: 'file:///home/aumon/downloasds/movies/The%20Lord%20of%20the%20Rings%20The%20Fellowship%20of%20the%20Ring%20THEATRICAL%20EDITION%20%282001%29%20%5B1080p%5D/The.Lord.of.the.Rings.The.Fellowship.of.the.Rings.THEATRICAL.EDITION.2001.1080p.BrRip.x264.BOKUTOX.YIFY.mp4',
-          path: '/home/aumon/downloads/movies/The Lord of the Rings The Fellowship of the Ring THEATRICAL EDITION (2001) [1080p]/The.Lord.of.the.Rings.The.Fellowship.of.the.Rings.THEATRICAL.EDITION.2001.1080p.BrRip.x264.BOKUTOX.YIFY.mp4',
-          name: 'Dir ' + (Math.random() * 10).toFixed(),
-          creation_time: 1660026411,
-          type: 'dir',
-          mode: 33188,
-        },
-        {
-          access_time: 1660025972,
-          modification_time: 1660026411,
-          size: 2580263063,
-          uid: 1000,
-          gid: 1001,
-          uri: 'file:///home/aumon/dsownloads/movies/The%20Lord%20of%20the%20Rings%20The%20Fellowship%20of%20the%20Ring%20THEATRICAL%20EDITION%20%282001%29%20%5B1080p%5D/The.Lord.of.the.Rings.The.Fellowship.of.the.Rings.THEATRICAL.EDITION.2001.1080p.BrRip.x264.BOKUTOX.YIFY.mp4',
-          path: '/home/aumon/downloads/movies/The Lord of the Rings The Fellowship of the Ring THEATRICAL EDITION (2001) [1080p]/The.Lord.of.the.Rings.The.Fellowship.of.the.Rings.THEATRICAL.EDITION.2001.1080p.BrRip.x264.BOKUTOX.YIFY.mp4',
-          name: 'ellowship.of.the.Rings.THEATRICAL.EDITION.2001.1080p.BrRip.x264.BOKUTOX.YIFY.mp4',
-          creation_time: 1660026411,
-          type: 'dir',
-          mode: 33188,
-        },
-        {
-          access_time: 1660025972,
-          modification_time: 1660026411,
-          size: 2580263063,
-          uid: 1000,
-          gid: 1001,
-          uri: 'file:///home/aumon/downloads/movsies/The%20Lord%20of%20the%20Rings%20The%20Fellowship%20of%20the%20Ring%20THEATRICAL%20EDITION%20%282001%29%20%5B1080p%5D/The.Lord.of.the.Rings.The.Fellowship.of.the.Rings.THEATRICAL.EDITION.2001.1080p.BrRip.x264.BOKUTOX.YIFY.mp4',
-          path: '/home/aumon/downloads/movies/The Lord of the Rings The Fellowship of the Ring THEATRICAL EDITION (2001) [1080p]/The.Lord.of.the.Rings.The.Fellowship.of.the.Rings.THEATRICAL.EDITION.2001.1080p.BrRip.x264.BOKUTOX.YIFY.mp4',
-          name: 'AAellowship.of.the.Rings.THEATRICAL.EDITION.2001.1080p.BrRip.x264.BOKUTOX.YIFY.mp4',
-          creation_time: 1660026411,
-          type: 'dir',
-          mode: 33188,
-        },
-        {
-          access_time: 1660025972,
-          modification_time: 1660026411,
-          size: 2580263063,
-          uid: 1000,
-          gid: 1001,
-          uri: 'file:///home/aumon/downloads/maovies/The%20Lord%20of%20the%20Rings%20The%20Fellowship%20of%20the%20Ring%20THEATRICAL%20EDITION%20%282001%29%20%5B1080p%5D/The.Lord.of.the.Rings.The.Fellowship.of.the.Rings.THEATRICAL.EDITION.2001.1080p.BrRip.x264.BOKUTOX.YIFY.mp4',
-          path: '/home/aumon/downloads/movies/The Lord of the Rings The Fellowship of the Ring THEATRICAL EDITION (2001) [1080p]/The.Lord.of.the.Rings.The.Fellowship.of.the.Rings.THEATRICAL.EDITION.2001.1080p.BrRip.x264.BOKUTOX.YIFY.mp4',
-          name: 'ZZZellowship.of.the.Rings.THEATRICAL.EDITION.2001.1080p.BrRip.x264.BOKUTOX.YIFY.mp4',
-          creation_time: 1660026411,
-          type: 'dir',
-          mode: 33188,
-        },
-        {
-          access_time: 1660025972,
-          modification_time: 1660026411,
-          size: 2580263063,
-          uid: 1000,
-          gid: 1001,
-          uri: 'file:///home/aumon/downloads/mdovies/The%20Lord%20of%20the%20Rings%20The%20Fellowship%20of%20the%20Ring%20THEATRICAL%20EDITION%20%282001%29%20%5B1080p%5D/The.Lord.of.the.Rings.The.Fellowship.of.the.Rings.THEATRICAL.EDITION.2001.1080p.BrRip.x264.BOKUTOX.YIFY.mp4',
-          path: '/home/aumon/downloads/movies/The Lord of the Rings The Fellowship of the Ring THEATRICAL EDITION (2001) [1080p]/The.Lord.of.the.Rings.The.Fellowship.of.the.Rings.THEATRICAL.EDITION.2001.1080p.BrRip.x264.BOKUTOX.YIFY.mp4',
-          name: 'ZThe.Lord.of.the.Rings.The.Fellowship.of.the.Rings.THEATRICAL.EDITION.2001.1080p.BrRip.x264.BOKUTOX.YIFY.mp4',
-          creation_time: 1660026411,
-          type: 'file',
-          mode: 33188,
-        },
-        {
-          access_time: 1660025972,
-          modification_time: 1660026411,
-          size: 2580263063,
-          uid: 1000,
-          gid: 1001,
-          uri: 'file:///home/aumon/downloads/mouvies/The%20Lord%20of%20the%20Rings%20The%20Fellowship%20of%20the%20Ring%20THEATRICAL%20EDITION%20%282001%29%20%5B1080p%5D/The.Lord.of.the.Rings.The.Fellowship.of.the.Rings.THEATRICAL.EDITION.2001.1080p.BrRip.x264.BOKUTOX.YIFY.mp4',
-          path: '/home/aumon/downloads/movies/The Lord of the Rings The Fellowship of the Ring THEATRICAL EDITION (2001) [1080p]/The.Lord.of.the.Rings.The.Fellowship.of.the.Rings.THEATRICAL.EDITION.2001.1080p.BrRip.x264.BOKUTOX.YIFY.mp4',
-          name: 'Zof.the.Rings.The.Fellowship.of.the.Rings.THEATRICAL.EDITION.2001.1080p.BrRip.x264.BOKUTOX.YIFY.mp4',
-          creation_time: 1660026411,
-          type: 'file',
-          mode: 33188,
-        },
-        {
-          access_time: 1660025972,
-          modification_time: 1660026411,
-          size: 2580263063,
-          uid: 1000,
-          gid: 1001,
-          uri: 'file:///home/aumon/downloads/movieys/The%20Lord%20of%20the%20Rings%20The%20Fellowship%20of%20the%20Ring%20THEATRICAL%20EDITION%20%282001%29%20%5B1080p%5D/The.Lord.of.the.Rings.The.Fellowship.of.the.Rings.THEATRICAL.EDITION.2001.1080p.BrRip.x264.BOKUTOX.YIFY.mp4',
-          path: '/home/aumon/downloads/movies/The Lord of the Rings The Fellowship of the Ring THEATRICAL EDITION (2001) [1080p]/The.Lord.of.the.Rings.The.Fellowship.of.the.Rings.THEATRICAL.EDITION.2001.1080p.BrRip.x264.BOKUTOX.YIFY.mp4',
-          name: 'Ze.Fellowship.of.the.Rings.THEATRICAL.EDITION.2001.1080p.BrRip.x264.BOKUTOX.YIFY.mp4',
-          creation_time: 1660026411,
-          type: 'file',
-          mode: 33188,
-        },
-      ],
-    }
+    const ResponseBrowserDirExample: ResponseBrowserDir = browseData[uri]
     return await Promise.resolve(ResponseBrowserDirExample.element)
     //.then(({ elements }))
   }

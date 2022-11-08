@@ -1,8 +1,8 @@
 @import './vars.scss';
+@import './mixins.scss';
 
-@import './buttons.scss';
-@import './filebrowser.scss';
-
+@import './common/imports';
+@import './sections/imports';
 
 
 html, body, #root {
@@ -36,9 +36,4 @@ html, body, #root {
   background-color: purple;
   height: 100%;
   grid-column: span 2;
-}
-
-#playlist {
-  background-color: navy;
-  // width: 200px;
 }

@@ -1,10 +1,10 @@
 import React, { createContext, FC, ReactNode } from 'react'
-import FileBrowser from './FileBrowser'
-import Playlist from './Playlist'
+import FileBrowser from './ui/FileBrowser'
+import Playlist from './ui/Playlist'
 import './scss/main.scss'
 
-import VLC from './vlc'
-import Controls from './vlc/Controls'
+import VLC from '@vlc/index'
+import Controls from '@ui/Controls'
 
 export const AppCtx = createContext({
   vlc: new VLC(),

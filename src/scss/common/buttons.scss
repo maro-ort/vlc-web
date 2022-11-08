@@ -2,8 +2,8 @@ button, .button {
   background-color: transparent;
   border: 2px solid var(--color-light);
   border-radius: 5px;
+  box-sizing: border-box;
   color: var(--color-light);
-  margin: .1rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
