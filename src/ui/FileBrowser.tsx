@@ -20,7 +20,7 @@ const Breadcrumbs: FC<{ path: string; browseTo: (path: string) => void }> = ({ p
   // Replace /home/* with ~/*
   // if (path.startsWith('/home/')) {
   //   path = path.replace(/^\/home\//, '~')
-  // const homeRegex = /^\/home\/([^\\/]+)/
+  //   // const homeRegex = /^\/home\/([^\\/]+)/
   // }
   // Shorten folder names
   const breadcrumbs = path.split('/').filter(Boolean)
@@ -32,19 +32,23 @@ const Breadcrumbs: FC<{ path: string; browseTo: (path: string) => void }> = ({ p
   }))
 
   return (
-    <div className="filebroweser__breadcrumbs">
+    <div className="filebrowser__breadcrumbs">
       <div className="filebrowser__parents">
-        {links
-          .map((v, i) => (
-            <div key={i} onClick={() => browseTo(v.path)} title={v.path}>
-              {v.name}
-            </div>
-          ))
-          .reduce((acc, c) => (
-            <>
-              {acc}/{c}
-            </>
-          ))}
+        <div onClick={() => browseTo('/')} title="/">
+          /
+        </div>
+        {links.length > 0 &&
+          links
+            .map((v, i) => (
+              <div key={i} onClick={() => browseTo(v.path)} title={v.path}>
+                {v.name}
+              </div>
+            ))
+            .reduce((acc, c) => (
+              <>
+                {acc}/{c}
+              </>
+            ))}
       </div>
       <div className="filebrowser__current">{current}</div>
     </div>
@@ -88,6 +92,7 @@ const FileItem: FC<{
 }> = ({ file, addToPlaylist }) => {
   const extension = (() => {
     const ext = file.name.split('.').pop()
+    // NOTE: Naive extension validation
     return ext && /^\w{2,5}$/.test(ext) ? ext.toLocaleUpperCase() : undefined
   })()
 
@@ -157,8 +162,7 @@ const FileBrowser: FC<{}> = () => {
   )
 
   const browseToParent = useCallback(() => {
-    const path = itemList.parent?.path.split('/').slice(0, -2).join('/')
-    if (!path) return
+    const path = itemList.parent?.path.split('/').slice(0, -2).join('/') || '/'
     browseTo(path)
   }, [browseTo, itemList.parent?.path])
 

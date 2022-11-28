@@ -1,19 +1,24 @@
 import { browseData } from '@src/data/browse.data'
 
-const sendCommand = async <T>(params: Record<string, string> = {}, path: string = 'status'): Promise<T> => {
-  const query = new URLSearchParams(params)
+const HOST = 'http://localhost:8010/proxy'
+const PASSWORD = 'vlc'
 
-  return await fetch(`/requests/${path}.json?${query.toString()}`, {
+const sendCommand = async <T>(params: Record<string, string> = {}, path: string = 'status'): Promise<T> => {
+  const query = Object.entries(params)
+    .map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`)
+    .join('&')
+
+  return await fetch(`${HOST}/requests/${path}.json?${query}`, {
     headers: {
-      Authorization: 'Basic ' + btoa(':pass'),
+      Authorization: 'Basic ' + btoa(`:${PASSWORD}`),
     },
   }).then(async r => await r.json())
 }
 
 class Browser {
   async dir(uri: string): Promise<BrowserItem[]> {
-    return this.fakeDir(uri)
-    // return await sendCommand<ResponseBrowserDir>({ dir: uri }, 'browse').then(({ element }) => element)
+    // return this.fakeDir(uri)
+    return await sendCommand<ResponseBrowserDir>({ dir: uri }, 'browse').then(({ element }) => element)
   }
 
   async fakeDir(uri: string): Promise<BrowserItem[]> {
@@ -57,12 +62,13 @@ class Controls {
   }
 
   volume(val: string): void {
-    if (/^((\+|-)?\d+|\d+%?)$/.test(val)) throw new Error(`Invalid value for volume: ${val}`)
+    // /^((\+|-)?\d+|\d+%?)$/ tests for ±vol or vol%
+    if (!/^((\+|-)?\d+|\d+%?)$/.test(val)) throw new Error(`Invalid value for volume: ${val}`)
     void sendCommand({ command: 'volume', val })
   }
 
   seek(val: string): void {
-    if (/^((\+|-)?\d+|\d+%?)$/.test(val)) throw new Error(`Invalid value for seek: ${val}`)
+    if (!/^((\+|-)?\d+|\d+%?)$/.test(val)) throw new Error(`Invalid value for seek: ${val}`)
     void sendCommand({ command: 'seek', val })
   }
 
@@ -118,9 +124,29 @@ export default class VLC {
     this.playlist = new Playlist()
   }
 
-  async status(): Promise<void> {
+  async status(): Promise<Status> {
     return await sendCommand().then(r => {
-      console.log({ r })
+      const { length, time, position, state, volume, information, fullscreen, loop, random, repeat } =
+        r as ResponseStatus
+      const { meta } = information?.category || {}
+      const title = meta?.title || meta?.filename || 'Unknown'
+      return {
+        title,
+        time: {
+          length,
+          current: time,
+          position,
+        },
+        state,
+        volume,
+
+        options: {
+          fullscreen,
+          loop,
+          random,
+          repeat,
+        },
+      }
     })
   }
 }

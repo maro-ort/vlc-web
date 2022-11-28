@@ -19,6 +19,26 @@ interface PlaylistSource {
   children: PlaylistItem[]
 }
 
+interface Status {
+  title: string
+  time: {
+    length: number
+    current: time
+    position: number
+  }
+  state: VLCState
+  volume: number
+
+  options: {
+    fullscreen: boolean
+    loop: boolean
+    random: boolean
+    repeat: boolean
+  }
+}
+
+type VLCState = 'stopped' | 'paused' | 'playing'
+
 /**
  * DTO
  */
@@ -34,4 +54,27 @@ interface ResponseBrowserDirSingleItem extends BrowserItem {
   gid: number
   mode: number
   uid: number
+}
+
+interface ResponseStatus {
+  volume: number
+  state: VLCState
+  position: number
+  length: number
+  time: number
+  fullscreen: boolean
+  loop: boolean
+  random: boolean
+  repeat: boolean
+  information?: {
+    category: {
+      meta: {
+        filename: string
+        title: string
+        seasonNumber: string
+        episodeNumber: string
+        showName: string
+      }
+    }
+  }
 }

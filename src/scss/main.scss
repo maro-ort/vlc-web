@@ -1,3 +1,5 @@
+@use 'sass:math';
+
 @import './vars.scss';
 @import './mixins.scss';
 
@@ -37,10 +39,4 @@ html, body, #root {
       width: 800px;
     }
   }
-}
-
-
-#controls {
-  background-color: purple;
-  padding: 16px;
 }

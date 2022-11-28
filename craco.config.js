@@ -7,6 +7,7 @@ module.exports = {
       '@svg': path.resolve(__dirname, 'src/svg'),
       '@ui': path.resolve(__dirname, 'src/ui'),
       '@vlc': path.resolve(__dirname, 'src/vlc'),
+      '@utils': path.resolve(__dirname, 'src/utils'),
     },
   },
 }

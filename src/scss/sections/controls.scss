@@ -1,0 +1,17 @@
+#controls {
+  background-color: var(--color-black);
+  padding: math.div($gutter, 2) $gutter;
+
+
+  .controls {
+
+    &__current {
+      font-size: .8em;
+    }
+
+    &__seek {
+      cursor: pointer;
+      width: 100%;
+    }
+  }
+}
