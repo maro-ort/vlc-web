@@ -1,14 +1,17 @@
+@use 'sass:math';
+
 $grid-gap: 1em;
 
 #filebrowser {
   .filebrowser {
     &__actions {
       align-items: end;
+      background-color: var(--color-black);
       border-bottom: 1px solid var(--color-light);
       display: grid;
       grid-gap: $grid-gap;
       grid-template-columns: 1fr auto auto;
-      padding: $grid-gap / 2 $grid-gap;
+      padding: math.div($grid-gap, 2) $grid-gap;
     }
 
     &__breadcrumbs {
@@ -36,29 +39,33 @@ $grid-gap: 1em;
     &__item {
       border-bottom: 1px solid var(--color-dark);
       display: grid;
-      cursor: pointer;
       grid-gap: $grid-gap;
       grid-template-columns: 1fr auto;
-      margin: $grid-gap / 2 $grid-gap;
-      padding-bottom: $grid-gap / 2;
+      margin: math.div($grid-gap, 2) $grid-gap;
+      padding-bottom: math.div($grid-gap, 2);
 
-      &:hover {
-        color: var(--color-accent);
-      }
 
       &.dir {
-        // background-color: var(--color-black);
+        cursor: pointer;
+      }
+
+      &-info {
+        overflow: hidden;
+        // text-overflow: ellipsis;
+        // width: 100%;
       }
 
       &-name {
-        overflow: hidden;
         text-overflow: ellipsis;
-        transition: all .1s;
-        // text-align: left;
+        overflow: hidden;
+        // width: 100%;
         white-space: nowrap;
-        width: 100%;
+      }
 
-
+      &-ext {
+        font-style: italic;
+        font-size: .8em;
+        margin-top: 1em;
       }
     }
 
@@ -71,8 +78,8 @@ $grid-gap: 1em;
         font-weight: bold;
         padding: 0 .5em;
 
-        &:first-child { padding-left: 0;}
-        &:last-child { padding-right: 0;}
+        &:first-child { padding-left: 0; }
+        &:last-child { padding-right: 0; }
 
         &:hover {
           color: var(--color-accent);

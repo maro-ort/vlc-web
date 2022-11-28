@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useContext, useEffect, useState } from 'react'
+import React, { FC, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import cx from 'classnames'
 
 import { AppCtx } from '@src/App'
@@ -9,6 +9,11 @@ type ItemListType = {
   parent?: BrowserItem
   dirs: BrowserItem[]
   files: BrowserItem[]
+}
+
+type DirInfoType = {
+  dirs: number
+  files: number
 }
 
 const Breadcrumbs: FC<{ path: string; browseTo: (path: string) => void }> = ({ path, browseTo }) => {
@@ -49,11 +54,26 @@ const Breadcrumbs: FC<{ path: string; browseTo: (path: string) => void }> = ({ p
 const DirItem: FC<{
   file: BrowserItem
   browseTo: () => void
-}> = ({ file, browseTo }) => {
+  getDirInfo: (path: string) => Promise<DirInfoType | undefined>
+}> = ({ file, browseTo, getDirInfo }) => {
+  const [dirInfo, setDirInfo] = useState<DirInfoType>()
+
+  useEffect(() => {
+    // TODO: Display loader
+    const interval = setTimeout(() => getDirInfo(file.path).then(setDirInfo), 500)
+    return () => clearInterval(interval)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   return (
     <>
-      <div className="filebrowser__item-name" onClick={browseTo} title={file.name}>
-        {file.name}
+      <div className="filebrowser__item-info" onClick={browseTo} title={file.name}>
+        <div className="filebrowser__item-name">{file.name}</div>
+        {dirInfo && (
+          <div className="filebrowser__item-ext">
+            Directories: {dirInfo.dirs}, files: {dirInfo.files}
+          </div>
+        )}
       </div>
       <div onClick={browseTo} title={file.name}>
         <button title="Open folder">📂</button>
@@ -66,13 +86,16 @@ const FileItem: FC<{
   file: BrowserItem
   addToPlaylist: (item: BrowserItem) => void
 }> = ({ file, addToPlaylist }) => {
-  const extension = file.name.split('.').pop()
+  const extension = (() => {
+    const ext = file.name.split('.').pop()
+    return ext && /^\w{2,5}$/.test(ext) ? ext.toLocaleUpperCase() : undefined
+  })()
 
   return (
     <>
-      <div className="filebrowser__item-name" title={file.name}>
-        {file.name}
-        <div>{extension}</div>
+      <div className="filebrowser__item-info" title={file.name}>
+        <div className="filebrowser__item-name">{file.name}</div>
+        {extension && <div className="filebrowser__item-ext">{extension}</div>}
       </div>
       <div>
         <button onClick={() => addToPlaylist(file)} title={`Add ${file.name} to pplaylist`}>
@@ -96,7 +119,7 @@ const FileBrowser: FC<{}> = () => {
       setPath(path)
 
       void vlc.browser
-        .fakeDir(path)
+        .dir(path)
         .then(f => f.sort((a, b) => (a.type === b.type ? a.name.localeCompare(b.name) : a.type.localeCompare(b.type))))
         .then(f =>
           f.reduce(
@@ -110,6 +133,25 @@ const FileBrowser: FC<{}> = () => {
           )
         )
         .then(setItemList)
+    },
+    [vlc.browser]
+  )
+
+  const getDirInfo = useCallback(
+    (path: string): Promise<DirInfoType | undefined> => {
+      return vlc.browser
+        .dir(path)
+        .then(f =>
+          f.reduce(
+            (acc, { type }) => {
+              if (type === 'dir') acc.dirs++
+              else if (type === 'file') acc.files++
+              return acc
+            },
+            { dirs: -1, files: 0 }
+          )
+        )
+        .catch(() => undefined)
     },
     [vlc.browser]
   )
@@ -134,12 +176,12 @@ const FileBrowser: FC<{}> = () => {
       </div>
       <div className="filebrowser__items">
         {itemList.dirs.map((file, i) => (
-          <div key={i} className={cx('filebrowser__item', file.type)}>
-            <DirItem file={file} browseTo={() => browseTo(file.path)} />
+          <div key={i + file.path} className={cx('filebrowser__item', file.type)}>
+            <DirItem file={file} browseTo={() => browseTo(file.path)} getDirInfo={getDirInfo} />
           </div>
         ))}
         {itemList.files.map((file, i) => (
-          <div key={i} className={cx('filebrowser__item', file.type)}>
+          <div key={i + file.path} className={cx('filebrowser__item', file.type)}>
             <FileItem file={file} addToPlaylist={addToPlaylist} />
           </div>
         ))}

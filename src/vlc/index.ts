@@ -12,7 +12,8 @@ const sendCommand = async <T>(params: Record<string, string> = {}, path: string 
 
 class Browser {
   async dir(uri: string): Promise<BrowserItem[]> {
-    return await sendCommand<ResponseBrowserDir>({ dir: uri }, 'browse').then(({ element }) => element)
+    return this.fakeDir(uri)
+    // return await sendCommand<ResponseBrowserDir>({ dir: uri }, 'browse').then(({ element }) => element)
   }
 
   async fakeDir(uri: string): Promise<BrowserItem[]> {
