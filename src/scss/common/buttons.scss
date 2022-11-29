@@ -1,4 +1,4 @@
-button, .button {
+button, .button, select {
   align-items: center;
   background-color: transparent;
   border-radius: 5px;
@@ -20,4 +20,8 @@ button, .button {
     color: var(--color-accent);
     cursor: pointer;
   }
+}
+
+select {
+  width: auto;
 }

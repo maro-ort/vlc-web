@@ -1,7 +1,7 @@
 import { browseData } from '@src/data/browse.data'
 
-const HOST = 'http://localhost:8010/proxy'
-const PASSWORD = 'vlc'
+const HOST = process.env.REACT_APP_VLC_HOST
+const PASSWORD = process.env.REACT_APP_VLC_PSSWD
 
 const sendCommand = async <T>(params: Record<string, string> = {}, path: string = 'status'): Promise<T> => {
   const query = Object.entries(params)

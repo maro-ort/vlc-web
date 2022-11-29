@@ -5,6 +5,18 @@
 
   .controls {
 
+    &__actions {
+      display: grid;
+      grid-template-columns: repeat(3, fit-content(100%));
+      grid-template-rows: repeat(3, 1fr);
+      grid-gap: math.div($gutter, 2);
+      justify-content: end;
+
+      > * {
+        justify-self: end;
+      }
+    }
+
     &__current {
       font-size: .8em;
     }
@@ -12,6 +24,11 @@
     &__seek {
       cursor: pointer;
       width: 100%;
+    }
+
+    &__time {
+      display: flex;
+      justify-content: space-between;
     }
   }
 }
