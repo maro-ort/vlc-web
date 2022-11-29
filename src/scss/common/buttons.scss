@@ -1,4 +1,6 @@
-button, .button, select {
+button,
+.button,
+select {
   align-items: center;
   background-color: transparent;
   border-radius: 5px;
@@ -10,8 +12,8 @@ button, .button, select {
   height: 2.5rem;
   justify-content: center;
   line-height: 1.25rem;
-  padding: .5rem;
-  transition: all .3s;
+  padding: 0.5rem;
+  transition: all 0.3s;
   vertical-align: top;
   width: 2.5rem;
 

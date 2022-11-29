@@ -2,9 +2,8 @@
   @include no-select;
 
   svg {
-    transition: all .3s;
+    transition: all 0.3s;
   }
-
 
   &:hover {
     border-color: var(--color-accent);
@@ -25,7 +24,6 @@
       }
     }
   }
-
 
   // label {
   //   cursor: pointer;
@@ -66,5 +64,4 @@
   //     vertical-align: middle;
   //   }
   // }
-
 }

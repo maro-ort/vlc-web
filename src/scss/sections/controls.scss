@@ -2,9 +2,7 @@
   background-color: var(--color-black);
   padding: math.div($gutter, 2) $gutter;
 
-
   .controls {
-
     &__actions {
       display: grid;
       grid-template-columns: repeat(3, fit-content(100%));
@@ -18,7 +16,7 @@
     }
 
     &__current {
-      font-size: .8em;
+      font-size: 0.8em;
     }
 
     &__seek {
