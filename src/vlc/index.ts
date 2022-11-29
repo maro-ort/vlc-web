@@ -12,7 +12,7 @@ const sendCommand = async <T>(params: Record<string, string> = {}, path: string 
     headers: {
       Authorization: 'Basic ' + btoa(`:${PASSWORD}`),
     },
-  }).then(async r => await r.json())
+  }).then(r => r.json())
 }
 
 class Browser {
@@ -28,7 +28,7 @@ class Browser {
   }
 }
 
-class Controls {
+export class Controls {
   loop(): void {
     void sendCommand({ command: 'pl_loop' })
   }

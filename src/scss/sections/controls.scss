@@ -1,22 +1,63 @@
 #controls {
   background-color: var(--color-black);
+  display: grid;
+  grid-template-rows: repeat(3, fit-content(100%));
+  grid-gap: math.div($gutter, 2);
   padding: math.div($gutter, 2) $gutter;
 
   .controls {
     &__actions {
       display: grid;
-      grid-template-columns: repeat(3, fit-content(100%));
-      grid-template-rows: repeat(3, 1fr);
+      grid-template-columns: repeat(4, fit-content(100%)) 1fr;
+      // grid-template-rows: repeat(2, 1fr);
       grid-gap: math.div($gutter, 2);
       justify-content: end;
 
+      grid-template-areas:
+        'skipT skipT skipB skipF play'
+        'settg fulls prev next play';
+
       > * {
         justify-self: end;
+      }
+
+      .fulls {
+        grid-area: fulls;
+      }
+
+      .next {
+        grid-area: next;
+      }
+      .play {
+        grid-area: play;
+        height: 100%;
+        font-size: 400%;
+        width: 100%;
+      }
+
+      .prev {
+        grid-area: prev;
+      }
+      .settg {
+        grid-area: settg;
+      }
+
+      .skipF {
+        grid-area: skipF;
+      }
+      .skipT {
+        grid-area: skipT;
       }
     }
 
     &__current {
       font-size: 0.8em;
+    }
+
+    &__play {
+      // grid-area: 5 / 1 / span 2 / span 2;
+      height: 100%;
+      width: 100%;
     }
 
     &__seek {
@@ -25,8 +66,10 @@
     }
 
     &__time {
-      display: flex;
-      justify-content: space-between;
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+
+      align-items: start;
     }
   }
 }

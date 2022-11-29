@@ -1,8 +1,14 @@
-import React, { FC, useContext, useEffect, useState } from 'react'
+import React, { FC, useCallback, useContext, useEffect, useState } from 'react'
+import cx from 'classnames'
+import { Helmet } from 'react-helmet'
 
 import { AppCtx } from '@src/App'
 
 import { second2Time } from '@utils/secont2time'
+
+import Actions from '@ui/controls/Actions'
+import Volume from '@ui/controls/Volume'
+import Seek from '@ui/controls/Seek'
 
 import { ReactComponent as PlaySvg } from '@svg/play.svg'
 
@@ -39,23 +45,21 @@ import { ReactComponent as PlaySvg } from '@svg/play.svg'
 //// Fullscreen
 //// Settings
 
-const Seek: FC<{ seek: (pos: string) => void }> = ({ seek }) => {
-  const onSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.currentTarget
-    seek(value + '%')
-  }
-
-  return <input className="controls__seek" onChange={onSeek} type="range" value="50%" />
-}
-
 const Controls: FC<{}> = () => {
   const { vlc } = useContext(AppCtx)
   const [status, setStatus] = useState<Status>()
   const [updateStatusDelay, setUpdateStatusDelay] = useState(500)
+  const [title, setTitle] = useState<string>()
 
-  const updateStatus = () => {
+  const updateStatus = useCallback(() => {
     vlc.status().then(setStatus)
-  }
+  }, [vlc])
+
+  // updateStatus()
+  useEffect(() => {
+    const updateStatusInterval = setInterval(updateStatus, updateStatusDelay)
+    return () => clearInterval(updateStatusInterval)
+  }, [updateStatus, updateStatusDelay])
 
   // updateStatusDelay
   useEffect(() => {
@@ -64,51 +68,32 @@ const Controls: FC<{}> = () => {
     else setUpdateStatusDelay(500)
   }, [status?.state])
 
-  // updateStatus()
+  // Update title
   useEffect(() => {
-    const updateStatusInterval = setInterval(updateStatus, updateStatusDelay)
-
-    return () => {
-      clearInterval(updateStatusInterval)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [updateStatusDelay])
+    const newTitle = status?.title
+      ? `${['paused', 'stopped'].includes(status.state) ? `[${status.state}] - ` : ''}${status.title}`
+      : 'VLC'
+    setTitle(newTitle)
+  }, [status?.state, status?.title])
 
   return (
     <section id="controls">
+      <Helmet title={title} />
+
       <div className="controls__current">{status?.title}</div>
-      <Seek seek={vlc.controls.seek} />
+
+      <Seek seek={vlc.controls.seek} time={status?.time} />
+
       <div className="controls__time">
         <div>
-          {second2Time(status?.time.current)} / {second2Time(status?.time.length)}
+          <div>{second2Time(status?.time.current)}</div>
+          <div>{second2Time(status?.time.length)}</div>
         </div>
 
-        <div>
-          <select>
-            <option>5</option>
-            <option>10</option>
-            <option>15</option>
-          </select>
-          <button>⏪︎</button>
-          <button>⏩︎</button>
-        </div>
+        <Volume vol={status?.volume ?? 0} setVol={vlc.controls.volume} />
       </div>
 
-      <div>
-        <div className="controls__actions">
-          <select>
-            <option>5</option>
-            <option>10</option>
-            <option>15</option>
-          </select>
-          <button>⏪︎</button>
-          <button>⏩︎</button>
-
-          <button>
-            <PlaySvg />
-          </button>
-        </div>
-      </div>
+      <Actions controls={vlc.controls} status={status} />
     </section>
   )
 }
