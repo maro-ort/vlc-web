@@ -29,6 +29,10 @@ class Browser {
 }
 
 export class Controls {
+  enqueueFile(uri: string): void {
+    void sendCommand({ command: 'in_enqueue', input: uri })
+  }
+
   loop(): void {
     void sendCommand({ command: 'pl_loop' })
   }
@@ -38,7 +42,7 @@ export class Controls {
   }
 
   next(): void {
-    void sendCommand({ command: 'pl_stop' })
+    void sendCommand({ command: 'pl_next' })
   }
 
   playFile(uri: string): void {

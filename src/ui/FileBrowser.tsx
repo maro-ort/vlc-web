@@ -169,13 +169,25 @@ const FileBrowser: FC<{}> = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => browseTo(path), [])
 
-  const addToPlaylist = (item: BrowserItem) => {}
+  const addToPlaylist = (item: BrowserItem) => {
+    vlc.controls.enqueueFile(item.uri)
+  }
+
+  const addAllToPlaylist = () => {
+    itemList.files.forEach(item => vlc.controls.enqueueFile(item.uri))
+  }
 
   return (
     <div id="filebrowser">
       <div className="filebrowser__actions">
         <Breadcrumbs browseTo={browseTo} path={path} />
-        <div>{itemList.files?.length > 0 && <button title="Add all files">📂</button>}</div>
+        <div>
+          {itemList.files?.length > 0 && (
+            <button title="Add all files" onClick={addAllToPlaylist}>
+              📂
+            </button>
+          )}
+        </div>
         <button onClick={browseToParent}>↑</button>
       </div>
       <div className="filebrowser__items">
