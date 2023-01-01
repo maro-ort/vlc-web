@@ -11,6 +11,7 @@ interface PlaylistItem {
   uri: string
   name: string
   duration: number
+  current?: 'current'
 }
 
 interface PlaylistSource {
@@ -23,7 +24,7 @@ interface Status {
   title: string
   time: {
     length: number
-    current: time
+    current: number
     position: number
   }
   state: VLCState

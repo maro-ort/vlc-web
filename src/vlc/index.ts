@@ -67,12 +67,12 @@ export class Controls {
 
   volume(val: string): void {
     // /^((\+|-)?\d+|\d+%?)$/ tests for ±vol or vol%
-    if (!/^((\+|-)?\d+|\d+%?)$/.test(val)) throw new Error(`Invalid value for volume: ${val}`)
+    // if (!/^((\+|-)?\d+|\d+%?)$/.test(val)) throw new Error(`Invalid value for volume: ${val}`)
     void sendCommand({ command: 'volume', val })
   }
 
   seek(val: string): void {
-    if (!/^((\+|-)?\d+|\d+%?)$/.test(val)) throw new Error(`Invalid value for seek: ${val}`)
+    // if (!/^((\+|-)?\d+|\d+%?)$/.test(val)) throw new Error(`Invalid value for seek: ${val}`)
     void sendCommand({ command: 'seek', val })
   }
 
@@ -101,6 +101,10 @@ class Playlist {
 
   delete(id: string): void {
     void sendCommand({ command: 'pl_delete', id })
+  }
+
+  play(id: string): void {
+    void sendCommand({ command: 'pl_play', id })
   }
 
   async fetch(): Promise<PlaylistItem[]> {

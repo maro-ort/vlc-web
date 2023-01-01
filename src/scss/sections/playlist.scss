@@ -1,11 +1,32 @@
 #playlist {
   .playlist {
     &__items {
-      background-color: rgb(121, 89, 89);
+      background-color: var(--color-lighter);
       box-sizing: border-box;
+      color: var(--color-darker);
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-gap: $gutter;
       overflow-x: hidden;
       overflow-y: auto;
-      padding: 20px;
+      padding: $gutter;
+      height: 100%;
+    }
+
+    &__item {
+      cursor: pointer;
+      border-bottom: 1px solid transparent;
+      transition: all 0.3s;
+      white-space: nowrap;
+
+      &:hover {
+        color: var(--color-accent);
+      }
+
+      &.--current {
+        border-bottom-color: var(--color-accent);
+        color: var(--color-accent);
+      }
     }
   }
 }

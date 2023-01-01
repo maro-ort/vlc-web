@@ -5,6 +5,7 @@ import './scss/main.scss'
 
 import VLC from '@vlc/index'
 import Controls from '@ui/controls'
+import { HelmetProvider } from 'react-helmet-async'
 
 export const AppCtx = createContext({
   vlc: new VLC(),
@@ -28,13 +29,15 @@ const AppProvider: FC<{ children: ReactNode }> = ({ children }) => {
 
 const App: FC<{}> = () => {
   return (
-    <AppProvider>
-      <section id="drawer">
-        <Playlist />
-        <FileBrowser />
-      </section>
-      <Controls />
-    </AppProvider>
+    <HelmetProvider>
+      <AppProvider>
+        <section id="drawer">
+          <Playlist />
+          <FileBrowser />
+        </section>
+        <Controls />
+      </AppProvider>
+    </HelmetProvider>
   )
 }
 

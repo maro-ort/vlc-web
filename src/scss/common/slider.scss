@@ -1,0 +1,32 @@
+.slider {
+  cursor: pointer;
+  position: relative;
+  user-select: none;
+
+  &__path {
+    background-color: var(--color-lighter);
+    line-height: normal;
+    height: 0.2em;
+    margin: 0.4em 0;
+    width: 100%;
+  }
+
+  &__thumb {
+    background-color: var(--color-accent);
+    border-radius: 100%;
+    border: 0.1em solid var(--color-lighter);
+    box-sizing: border-box;
+    cursor: grab;
+    height: 1em;
+    position: absolute;
+    top: 0;
+    transform: translateX(-0.5em);
+    width: 1em;
+  }
+
+  &__track {
+    background-color: var(--color-accent);
+    height: 100%;
+    width: 50%;
+  }
+}

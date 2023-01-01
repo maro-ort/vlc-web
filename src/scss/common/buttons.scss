@@ -34,3 +34,53 @@ select {
   font-size: 1rem;
   width: 100%;
 }
+
+input[type='range'] {
+  @mixin thumb() {
+    background-color: var(--color-accent);
+    border: 2px solid var(--color-light);
+    border-radius: 100%;
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  @mixin track() {
+    border-radius: 0.25rem;
+    background-color: var(--color-light);
+    height: 0.25rem;
+  }
+  background-color: transparent;
+  -webkit-appearance: none;
+
+  &:focus {
+    outline: none;
+  }
+
+  &::-moz-range-thumb {
+    @include thumb();
+  }
+
+  &::-ms-track {
+    @include thumb();
+  }
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    @include thumb();
+  }
+
+  &::-moz-range-track {
+    @include track();
+  }
+  &::-ms-track {
+    @include track();
+  }
+  &::-webkit-slider-runnable-track {
+    @include track();
+  }
+
+  &::-ms-fill-lower {
+  }
+  &::-ms-fill-upper {
+  }
+}

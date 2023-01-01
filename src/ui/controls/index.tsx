@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useContext, useEffect, useState } from 'react'
 import cx from 'classnames'
-import { Helmet } from 'react-helmet'
+import { Helmet } from 'react-helmet-async'
 
 import { AppCtx } from '@src/App'
 
@@ -9,6 +9,7 @@ import { second2Time } from '@utils/secont2time'
 import Actions from '@ui/controls/Actions'
 import Volume from '@ui/controls/Volume'
 import Seek from '@ui/controls/Seek'
+import Slider from '@ui/common/Slider'
 
 import { ReactComponent as PlaySvg } from '@svg/play.svg'
 
