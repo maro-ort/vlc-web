@@ -1,4 +1,4 @@
-export const second2Time = (seconds: number = 0): string => {
+export const seconds2Time = (seconds: number = 0): string => {
   if (seconds === 0) return '--:--:--'
 
   const hours = Math.floor(seconds / 3600)

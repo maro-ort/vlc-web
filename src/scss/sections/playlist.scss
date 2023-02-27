@@ -5,8 +5,9 @@
       box-sizing: border-box;
       color: var(--color-darker);
       display: grid;
-      grid-template-columns: 1fr;
+      grid-auto-rows: max-content;
       grid-gap: $gutter;
+      grid-template-columns: 1fr;
       overflow-x: hidden;
       overflow-y: auto;
       padding: $gutter;
@@ -14,18 +15,32 @@
     }
 
     &__item {
-      cursor: pointer;
-      border-bottom: 1px solid transparent;
+      border-left: 0 solid transparent;
+      display: grid;
+      grid-gap: $gutter;
+      grid-template-columns: 1fr auto;
       transition: all 0.3s;
       white-space: nowrap;
 
-      &:hover {
+      &.--current {
+        border-left-color: var(--color-accent);
+        border-left-width: $gutter / 2;
         color: var(--color-accent);
+        padding-left: $gutter / 2;
       }
 
-      &.--current {
-        border-bottom-color: var(--color-accent);
-        color: var(--color-accent);
+      &-name {
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+        &:hover {
+          color: var(--color-accent);
+        }
       }
     }
   }

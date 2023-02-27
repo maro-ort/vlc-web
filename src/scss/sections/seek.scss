@@ -1,0 +1,21 @@
+#seek {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-gap: $gutter;
+
+  @media #{$md} {
+    grid-template-columns: auto;
+    grid-gap: math.div($gutter, 20);
+  }
+
+  .seek {
+    &__time {
+      font-size: 0.8em;
+
+      @media #{$md} {
+        display: flex;
+        justify-content: space-between;
+      }
+    }
+  }
+}

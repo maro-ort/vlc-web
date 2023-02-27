@@ -29,8 +29,8 @@ class Browser {
 }
 
 export class Controls {
-  enqueueFile(uri: string): void {
-    void sendCommand({ command: 'in_enqueue', input: uri })
+  enqueueFile(uri: string): Promise<ResponseStatus> {
+    return sendCommand<ResponseStatus>({ command: 'in_enqueue', input: uri })
   }
 
   loop(): void {
@@ -95,16 +95,16 @@ class Playlist {
   /**
    * Commands
    */
-  clear(): void {
-    void sendCommand({ command: 'pl_empty' })
+  clear(): Promise<ResponseStatus> {
+    return sendCommand({ command: 'pl_empty' })
   }
 
-  delete(id: string): void {
-    void sendCommand({ command: 'pl_delete', id })
+  delete(id: string): Promise<ResponseStatus> {
+    return sendCommand({ command: 'pl_delete', id })
   }
 
-  play(id: string): void {
-    void sendCommand({ command: 'pl_play', id })
+  play(id: string): Promise<ResponseStatus> {
+    return sendCommand({ command: 'pl_play', id })
   }
 
   async fetch(): Promise<PlaylistItem[]> {

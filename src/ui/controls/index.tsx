@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet-async'
 
 import { AppCtx } from '@src/App'
 
-import { second2Time } from '@utils/secont2time'
+import { seconds2Time } from '@src/utils/seconds2time'
 
 import Actions from '@ui/controls/Actions'
 import Volume from '@ui/controls/Volume'
@@ -85,14 +85,7 @@ const Controls: FC<{}> = () => {
 
       <Seek seek={vlc.controls.seek} time={status?.time} />
 
-      <div className="controls__time">
-        <div>
-          <div>{second2Time(status?.time.current)}</div>
-          <div>{second2Time(status?.time.length)}</div>
-        </div>
-
-        <Volume vol={status?.volume ?? 0} setVol={vlc.controls.volume} />
-      </div>
+      <Volume vol={status?.volume ?? 0} setVol={vlc.controls.volume} />
 
       <Actions controls={vlc.controls} status={status} />
     </section>

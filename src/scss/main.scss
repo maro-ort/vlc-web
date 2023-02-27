@@ -37,7 +37,8 @@ body,
     #filebrowser {
       display: flex;
       flex-direction: column;
-      width: 800px;
+      // min-width: 800px;
+      width: 50%;
     }
   }
 }

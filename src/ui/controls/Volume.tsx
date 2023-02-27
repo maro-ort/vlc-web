@@ -15,7 +15,7 @@ const Volume: FC<{ vol: number; setVol: (val: string) => void }> = ({ vol, setVo
   return (
     <div id="volume">
       <output>{Math.round((vol * 100) / 256).toFixed()}%</output>
-      <div>{vol === 0 ? '🔇' : '🔊'}</div>
+      <div>{vol === 0 ? '🔇' : '🔊'}</div>{' '}
       <Slider
         onChange={(pos: number) => {
           if (!pos) return
@@ -24,7 +24,6 @@ const Volume: FC<{ vol: number; setVol: (val: string) => void }> = ({ vol, setVo
         value={vol}
         max={CEILING}
       />
-      {/* <input type="range" max={CEILING} value={vol} onChange={updateVol} /> */}
     </div>
   )
 }

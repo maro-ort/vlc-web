@@ -41,6 +41,10 @@
 
       &.dir {
         cursor: pointer;
+        transition: all 0.3s;
+        &:hover {
+          color: var(--color-accent);
+        }
       }
 
       &-info {

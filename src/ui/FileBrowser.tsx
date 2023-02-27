@@ -112,7 +112,7 @@ const FileItem: FC<{
 }
 
 const FileBrowser: FC<{}> = () => {
-  const { vlc, DEFAULT_PATH } = useContext(AppCtx)
+  const { DEFAULT_PATH, updatePlaylist, vlc } = useContext(AppCtx)
   const [path, setPath] = useState(DEFAULT_PATH)
   const [itemList, setItemList] = useState<ItemListType>({
     dirs: [],
@@ -169,13 +169,19 @@ const FileBrowser: FC<{}> = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => browseTo(path), [])
 
-  const addToPlaylist = (item: BrowserItem) => {
-    vlc.controls.enqueueFile(item.uri)
-  }
+  const addToPlaylist = useCallback(
+    (item: BrowserItem) => vlc.controls.enqueueFile(item.uri).then(() => updatePlaylist?.()),
+    [updatePlaylist, vlc]
+  )
 
-  const addAllToPlaylist = () => {
-    itemList.files.forEach(item => vlc.controls.enqueueFile(item.uri))
-  }
+  const addAllToPlaylist = useCallback(() => {
+    ;(async () => {
+      for (const item of itemList.files) {
+        await vlc.controls.enqueueFile(item.uri)
+      }
+      updatePlaylist?.()
+    })()
+  }, [updatePlaylist, vlc])
 
   return (
     <div id="filebrowser">
