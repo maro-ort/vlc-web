@@ -1,4 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg version="1.1" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
-  <path fill="currentColor" d="m30 2c-4.2-2.6-9.5-2.7-14-0.26-4.3 2.4-7 7-7 12v101c0 5 2.7 9.5 7 12 4.3 2.4 9.6 2.3 14-0.26l82-50c4.1-2.5 6.6-6.9 6.6-12s-2.5-9.2-6.6-12z" />
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-play"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>

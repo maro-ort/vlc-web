@@ -1,9 +1,11 @@
-import React, { FC, useCallback, useContext, useEffect, useState } from 'react'
+import React, { FC, useCallback, useContext } from 'react'
 import cx from 'classnames'
 
 import { AppCtx } from '@src/App'
 
 import { seconds2Time } from '@src/utils/seconds2time'
+
+import { ReactComponent as XSVG } from '@svg/x.svg'
 
 const Item: FC<{
   item: PlaylistItem
@@ -17,7 +19,7 @@ const Item: FC<{
         <div>{seconds2Time(item.duration)}</div>
       </div>
       <button title="Remove from playlist" onClick={() => removeItem(item.id)}>
-        ✖
+        <XSVG />
       </button>
     </div>
   )

@@ -37,12 +37,12 @@ export class Controls {
     void sendCommand({ command: 'pl_loop' })
   }
 
-  fullscreen(): void {
-    void sendCommand({ command: 'fullscreen' })
+  fullscreen(): Promise<ResponseStatus> {
+    return sendCommand({ command: 'fullscreen' })
   }
 
-  next(): void {
-    void sendCommand({ command: 'pl_next' })
+  next(): Promise<ResponseStatus> {
+    return sendCommand({ command: 'pl_next' })
   }
 
   playFile(uri: string): void {
@@ -53,8 +53,8 @@ export class Controls {
     void sendCommand({ command: 'pl_play', id })
   }
 
-  prev(): void {
-    void sendCommand({ command: 'pl_previous' })
+  prev(): Promise<ResponseStatus> {
+    return sendCommand({ command: 'pl_previous' })
   }
 
   random(): void {
@@ -65,23 +65,23 @@ export class Controls {
     void sendCommand({ command: 'pl_repeat' })
   }
 
-  volume(val: string): void {
+  volume(val: string): Promise<ResponseStatus> {
     // /^((\+|-)?\d+|\d+%?)$/ tests for ±vol or vol%
     // if (!/^((\+|-)?\d+|\d+%?)$/.test(val)) throw new Error(`Invalid value for volume: ${val}`)
-    void sendCommand({ command: 'volume', val })
+    return sendCommand({ command: 'volume', val })
   }
 
-  seek(val: string): void {
+  seek(val: string): Promise<ResponseStatus> {
     // if (!/^((\+|-)?\d+|\d+%?)$/.test(val)) throw new Error(`Invalid value for seek: ${val}`)
-    void sendCommand({ command: 'seek', val })
+    return sendCommand({ command: 'seek', val })
   }
 
   stop(): void {
     void sendCommand({ command: 'pl_stop' })
   }
 
-  togglePause(): void {
-    void sendCommand({ command: 'pl_pause' })
+  togglePause(): Promise<ResponseStatus> {
+    return sendCommand({ command: 'pl_pause' })
   }
 }
 

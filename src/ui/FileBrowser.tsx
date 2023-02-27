@@ -1,9 +1,12 @@
-import React, { FC, useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import React, { FC, useCallback, useContext, useEffect, useState } from 'react'
 import cx from 'classnames'
 
 import { AppCtx } from '@src/App'
 
-import { ReactComponent as PlaySvg } from '@svg/play.svg'
+import { ReactComponent as ArrowUpSVG } from '@svg/arrow-up.svg'
+import { ReactComponent as FolderSVG } from '@svg/folder.svg'
+import { ReactComponent as FolderPlusSVG } from '@svg/folder-plus.svg'
+import { ReactComponent as PlusSVG } from '@svg/plus.svg'
 
 type ItemListType = {
   parent?: BrowserItem
@@ -75,12 +78,14 @@ const DirItem: FC<{
         <div className="filebrowser__item-name">{file.name}</div>
         {dirInfo && (
           <div className="filebrowser__item-ext">
-            Directories: {dirInfo.dirs}, files: {dirInfo.files}
+            Directories: {dirInfo.dirs} - Files: {dirInfo.files}
           </div>
         )}
       </div>
       <div onClick={browseTo} title={file.name}>
-        <button title="Open folder">📂</button>
+        <button title="Open folder">
+          <FolderSVG />
+        </button>
       </div>
     </>
   )
@@ -104,7 +109,7 @@ const FileItem: FC<{
       </div>
       <div>
         <button onClick={() => addToPlaylist(file)} title={`Add ${file.name} to pplaylist`}>
-          <PlaySvg />
+          <PlusSVG />
         </button>
       </div>
     </>
@@ -190,11 +195,13 @@ const FileBrowser: FC<{}> = () => {
         <div>
           {itemList.files?.length > 0 && (
             <button title="Add all files" onClick={addAllToPlaylist}>
-              📂
+              <FolderPlusSVG />
             </button>
           )}
         </div>
-        <button onClick={browseToParent}>↑</button>
+        <button onClick={browseToParent}>
+          <ArrowUpSVG />
+        </button>
       </div>
       <div className="filebrowser__items">
         {itemList.dirs.map((file, i) => (
