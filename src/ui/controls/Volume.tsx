@@ -21,7 +21,7 @@ const Volume: FC<{ vol: number; setVol: (val: string) => void }> = ({ vol, setVo
   return (
     <div id="volume">
       <output>{Math.round((vol * 100) / 256).toFixed()}%</output>
-      <div>{volumeIcon()}</div>
+      {volumeIcon()}
       <Slider
         onChange={(pos: number) => {
           if (!pos) return

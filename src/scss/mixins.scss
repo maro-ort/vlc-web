@@ -1,3 +1,24 @@
+@mixin hover($value, $properties...) {
+  touch-action: manipulation;
+
+  @media (hover: hover) {
+    &:hover {
+      @each $property in $properties {
+        #{$property}: $value;
+      }
+    }
+  }
+
+  @media (hover: none) {
+    &:active {
+      @each $property in $properties {
+        #{$property}: $value;
+      }
+    }
+  }
+
+}
+
 @mixin no-select {
   -webkit-touch-callout: none;
   -webkit-user-select: none;

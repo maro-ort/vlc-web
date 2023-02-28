@@ -10,7 +10,7 @@
       grid-template-columns: 1fr;
       overflow-x: hidden;
       overflow-y: auto;
-      padding: $gutter;
+      padding: math.div($gutter, 2) $gutter;
       height: 100%;
     }
 
@@ -27,9 +27,14 @@
         border-left-width: $gutter / 2;
         color: var(--color-accent);
         padding-left: $gutter / 2;
+        font-weight: bold;
       }
 
       &-name {
+        @include hover(
+          var(--color-accent),
+          color
+        );
         cursor: pointer;
         display: flex;
         flex-direction: column;
@@ -37,10 +42,6 @@
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-
-        &:hover {
-          color: var(--color-accent);
-        }
       }
     }
   }

@@ -1,6 +1,11 @@
 button,
 .button,
 select {
+  @include hover(
+    var(--color-accent),
+    border-color,
+    color
+  );
   align-items: center;
   background-color: transparent;
   border-radius: 5px;
@@ -18,15 +23,7 @@ select {
   vertical-align: top;
   width: 2.5rem;
 
-  &:hover {
-    border-color: var(--color-accent);
-    color: var(--color-accent);
-  }
 
-  &.--active {
-    border-color: var(--color-accent);
-    color: var(--color-accent);
-  }
 }
 
 select {
@@ -49,6 +46,7 @@ input[type='range'] {
     background-color: var(--color-light);
     height: 0.25rem;
   }
+
   background-color: transparent;
   -webkit-appearance: none;
 

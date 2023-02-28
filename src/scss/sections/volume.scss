@@ -3,10 +3,4 @@
   display: grid;
   grid-template-columns: fit-content(100%) fit-content(100%) 1fr;
   grid-gap: math.div($gutter, 2);
-  .volume {
-  }
-
-  output {
-    font-size: 0.8em;
-  }
 }
