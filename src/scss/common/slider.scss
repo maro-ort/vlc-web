@@ -6,16 +6,16 @@
 
   &__path {
     background-color: var(--color-lighter);
-    line-height: normal;
     height: 0.2em;
+    line-height: normal;
     margin: 0.4em 0;
     width: 100%;
   }
 
   &__thumb {
     background-color: var(--color-accent);
-    border-radius: 100%;
     border: 0.1em solid var(--color-lighter);
+    border-radius: 100%;
     box-sizing: border-box;
     cursor: grab;
     height: 1em;

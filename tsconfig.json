@@ -21,11 +21,12 @@
     "jsx": "react-jsx",
     "baseUrl": "./src",
     "paths": {
+      "@ctx/*": ["./ctx/*"],
       "@src/*": ["./*"],
       "@svg/*": ["./svg/*"],
       "@ui/*": ["./ui/*"],
-      "@vlc/*": ["./vlc/*"],
       "@utils/*": ["./utils/*"],
+      "@vlc/*": ["./vlc/*"],
     }
   },
   "include": [

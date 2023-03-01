@@ -1,7 +1,7 @@
 import React, { FC, useCallback, useContext, useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 
-import { AppCtx } from '@src/App'
+import AppCtx from '@ctx/app.ctx'
 
 import Actions from '@ui/controls/Actions'
 import Volume from '@ui/controls/Volume'

@@ -1,4 +1,5 @@
 @mixin hover($value, $properties...) {
+  cursor: pointer;
   touch-action: manipulation;
 
   @media (hover: hover) {

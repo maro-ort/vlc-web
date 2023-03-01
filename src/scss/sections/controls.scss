@@ -1,5 +1,6 @@
 #controls {
   background-color: var(--color-black);
+  border-top: 1px solid var(--color-light);
   display: grid;
   grid-template-rows: repeat(3, fit-content(100%));
   grid-gap: $gutter;
@@ -16,13 +17,12 @@
   .controls {
     &__actions {
       display: grid;
-      grid-template-columns: repeat(4, fit-content(100%)) 1fr;
       grid-gap: math.div($gutter, 2);
-      justify-content: end;
-
       grid-template-areas:
         'skipT skipT skipB skipF play'
         'settg fulls prev next play';
+      grid-template-columns: repeat(4, fit-content(100%)) 1fr;
+      justify-content: end;
 
       > * {
         justify-self: end;
@@ -36,9 +36,9 @@
         grid-area: next;
       }
       .play {
+        font-size: 400%;
         grid-area: play;
         height: 100%;
-        font-size: 400%;
         width: 100%;
       }
 

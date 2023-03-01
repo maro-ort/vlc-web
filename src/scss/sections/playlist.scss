@@ -8,10 +8,10 @@
       grid-auto-rows: max-content;
       grid-gap: $gutter;
       grid-template-columns: 1fr;
+      height: 100%;
       overflow-x: hidden;
       overflow-y: auto;
       padding: math.div($gutter, 2) $gutter;
-      height: 100%;
     }
 
     &__item {
@@ -26,8 +26,8 @@
         border-left-color: var(--color-accent);
         border-left-width: $gutter / 2;
         color: var(--color-accent);
-        padding-left: $gutter / 2;
         font-weight: bold;
+        padding-left: $gutter / 2;
       }
 
       &-name {

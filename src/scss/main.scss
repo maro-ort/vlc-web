@@ -27,18 +27,29 @@ body,
     display: flex;
     flex-grow: 1;
     height: 100%;
-    overflow: hidden;
     position: relative;
+    overflow: hidden;
 
     #playlist {
       flex-grow: 1;
     }
 
     #filebrowser {
-      display: flex;
-      flex-direction: column;
-      // min-width: 800px;
-      width: 50%;
+
+      @media #{$lg} {
+        position: relative;
+        width: 50%;
+
+        .filebrowser {
+          transition: all .3s;
+          &__handle {
+            display: none;
+          }
+          &__browser {
+            display: block;
+          }
+        }
+      }
     }
   }
 }

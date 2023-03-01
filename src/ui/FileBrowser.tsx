@@ -1,9 +1,12 @@
 import React, { FC, useCallback, useContext, useEffect, useState } from 'react'
 import cx from 'classnames'
 
-import { AppCtx } from '@src/App'
+import AppCtx from '@ctx/app.ctx'
+import UiCtx from '@ctx/ui.ctx'
 
 import { ReactComponent as ArrowUpSVG } from '@svg/arrow-up.svg'
+import { ReactComponent as ChevronLeftSVG } from '@svg/chevrons-left.svg'
+import { ReactComponent as ChevronRightSVG } from '@svg/chevrons-right.svg'
 import { ReactComponent as FolderSVG } from '@svg/folder.svg'
 import { ReactComponent as FolderPlusSVG } from '@svg/folder-plus.svg'
 import { ReactComponent as PlusSVG } from '@svg/plus.svg'
@@ -118,6 +121,7 @@ const FileItem: FC<{
 
 const FileBrowser: FC<{}> = () => {
   const { DEFAULT_PATH, updatePlaylist, vlc } = useContext(AppCtx)
+  const { filebrowserIsOpen, toggleFileBrowserOpen } = useContext(UiCtx)
   const [path, setPath] = useState(DEFAULT_PATH)
   const [itemList, setItemList] = useState<ItemListType>({
     dirs: [],
@@ -189,31 +193,36 @@ const FileBrowser: FC<{}> = () => {
   }, [updatePlaylist, vlc])
 
   return (
-    <div id="filebrowser">
-      <div className="filebrowser__actions">
-        <Breadcrumbs browseTo={browseTo} path={path} />
-        <div>
-          {itemList.files?.length > 0 && (
-            <button title="Add all files" onClick={addAllToPlaylist}>
-              <FolderPlusSVG />
-            </button>
-          )}
-        </div>
-        <button onClick={browseToParent}>
-          <ArrowUpSVG />
-        </button>
+    <div id="filebrowser" className={cx({ '--visible': filebrowserIsOpen })}>
+      <div className="filebrowser__handle" onClick={toggleFileBrowserOpen}>
+        {filebrowserIsOpen ? <ChevronRightSVG /> : <ChevronLeftSVG />}
       </div>
-      <div className="filebrowser__items">
-        {itemList.dirs.map((file, i) => (
-          <div key={i + file.path} className={cx('filebrowser__item', file.type)}>
-            <DirItem file={file} browseTo={() => browseTo(file.path)} getDirInfo={getDirInfo} />
+      <div className="filebrowser__browser">
+        <div className="filebrowser__actions">
+          <Breadcrumbs browseTo={browseTo} path={path} />
+          <div>
+            {itemList.files?.length > 0 && (
+              <button title="Add all files" onClick={addAllToPlaylist}>
+                <FolderPlusSVG />
+              </button>
+            )}
           </div>
-        ))}
-        {itemList.files.map((file, i) => (
-          <div key={i + file.path} className={cx('filebrowser__item', file.type)}>
-            <FileItem file={file} addToPlaylist={addToPlaylist} />
-          </div>
-        ))}
+          <button onClick={browseToParent}>
+            <ArrowUpSVG />
+          </button>
+        </div>
+        <div className="filebrowser__items">
+          {itemList.dirs.map((file, i) => (
+            <div key={i + file.path} className={cx('filebrowser__item', file.type)}>
+              <DirItem file={file} browseTo={() => browseTo(file.path)} getDirInfo={getDirInfo} />
+            </div>
+          ))}
+          {itemList.files.map((file, i) => (
+            <div key={i + file.path} className={cx('filebrowser__item', file.type)}>
+              <FileItem file={file} addToPlaylist={addToPlaylist} />
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   )

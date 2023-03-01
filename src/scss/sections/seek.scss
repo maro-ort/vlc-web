@@ -1,11 +1,11 @@
 #seek {
   display: grid;
-  grid-template-columns: auto 1fr;
   grid-gap: $gutter;
+  grid-template-columns: auto 1fr;
 
   @media #{$md} {
-    grid-template-columns: auto;
     grid-gap: math.div($gutter, 20);
+    grid-template-columns: auto;
   }
 
   .seek {

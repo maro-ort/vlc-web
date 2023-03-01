@@ -1,7 +1,7 @@
 import React, { FC, useCallback, useContext } from 'react'
 import cx from 'classnames'
 
-import { AppCtx } from '@src/App'
+import AppCtx from '@ctx/app.ctx'
 
 import { seconds2Time } from '@src/utils/seconds2time'
 

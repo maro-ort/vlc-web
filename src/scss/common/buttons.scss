@@ -8,8 +8,8 @@ select {
   );
   align-items: center;
   background-color: transparent;
-  border-radius: 5px;
   border: 2px solid var(--color-light);
+  border-radius: 5px;
   box-sizing: border-box;
   color: var(--color-light);
   cursor: pointer;
@@ -27,8 +27,8 @@ select {
 }
 
 select {
-  text-align: right;
   font-size: 1rem;
+  text-align: right;
   width: 100%;
 }
 
@@ -37,13 +37,13 @@ input[type='range'] {
     background-color: var(--color-accent);
     border: 2px solid var(--color-light);
     border-radius: 100%;
-    width: 1.5rem;
     height: 1.5rem;
+    width: 1.5rem;
   }
 
   @mixin track() {
-    border-radius: 0.25rem;
     background-color: var(--color-light);
+    border-radius: 0.25rem;
     height: 0.25rem;
   }
 
@@ -63,8 +63,8 @@ input[type='range'] {
   }
 
   &::-webkit-slider-thumb {
-    -webkit-appearance: none;
     @include thumb();
+    -webkit-appearance: none;
   }
 
   &::-moz-range-track {

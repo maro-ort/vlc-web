@@ -1,5 +1,26 @@
 #filebrowser {
+  background-color: var(--color-darker);
+  display: flex;
+
+  &.--visible {
+    bottom: 0;
+    left: $gutter;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+
+    .filebrowser__browser {
+      display: block;
+    }
+  }
+
   .filebrowser {
+    &__browser {
+      display: none;
+      width: 100%;
+    }
+
     &__actions {
       align-items: end;
       background-color: var(--color-black);
@@ -11,11 +32,11 @@
     }
 
     &__breadcrumbs {
-      justify-content: space-between;
       display: flex;
       flex-direction: column;
-      overflow: hidden;
+      justify-content: space-between;
       max-width: 100%;
+      overflow: hidden;
       text-overflow: ellipsis;
       transition: all 0.3s;
       white-space: nowrap;
@@ -24,6 +45,19 @@
     &__current {
       font-size: 1.5em;
       word-wrap: anywhere;
+    }
+
+    &__handle {
+      @include hover(var(--color-accent), color);
+      align-items: center;
+      background-color: var(--color-black);
+      display: flex;
+      justify-content: center;
+      padding: $gutter;
+
+      @media #{$lg} {
+        display: none;
+      }
     }
 
     &__items {
@@ -40,31 +74,26 @@
       padding-bottom: math.div($gutter, 2);
 
       &.dir {
+        @include hover(var(--color-accent), color);
         cursor: pointer;
         transition: all 0.3s;
-        &:hover {
-          color: var(--color-accent);
-        }
       }
 
       &-info {
         overflow: hidden;
-        // text-overflow: ellipsis;
-        // width: 100%;
       }
 
       &-name {
-        text-overflow: ellipsis;
         overflow: hidden;
-        // width: 100%;
+        text-overflow: ellipsis;
         white-space: nowrap;
       }
 
       &-ext {
-        text-align: right;
-        font-style: italic;
         font-size: 0.7em;
+        font-style: italic;
         margin-top: 0.5em;
+        text-align: right;
       }
     }
 
