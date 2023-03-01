@@ -1,10 +1,12 @@
 #controls {
   background-color: var(--color-black);
   border-top: 1px solid var(--color-light);
+  box-sizing: border-box;
   display: grid;
   grid-template-rows: repeat(3, fit-content(100%));
   grid-gap: $gutter;
   padding: $gutter;
+  width: 100vw;
 
   @media #{$lg} {
     grid-template-columns: 2fr 1fr;
@@ -65,6 +67,7 @@
 
     &__current {
       color: var(--color-lighter);
+      word-wrap: anywhere;
     }
   }
 }
