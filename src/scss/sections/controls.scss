@@ -20,7 +20,7 @@
       grid-gap: math.div($gutter, 2);
       grid-template-areas:
         'skipT skipT skipB skipF play'
-        'settg fulls prev next play';
+        'clear fulls prev next play';
       grid-template-columns: repeat(4, fit-content(100%)) 1fr;
       justify-content: end;
 
@@ -45,8 +45,8 @@
       .prev {
         grid-area: prev;
       }
-      .settg {
-        grid-area: settg;
+      .clear {
+        grid-area: clear;
       }
 
       .skipF {

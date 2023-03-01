@@ -1,6 +1,7 @@
-import { FC, useCallback, useState } from 'react'
+import { FC, useCallback, useContext, useState } from 'react'
 import cx from 'classnames'
 
+import LSCtx from '@ctx/ls.ctx'
 import { Controls } from '@src/vlc'
 
 import { ReactComponent as FastForwardSVG } from '@svg/fast-forward.svg'
@@ -9,26 +10,29 @@ import { ReactComponent as MinimizeSVG } from '@svg/minimize.svg'
 import { ReactComponent as PauseSVG } from '@svg/pause.svg'
 import { ReactComponent as PlaySVG } from '@svg/play.svg'
 import { ReactComponent as RewindSVG } from '@svg/rewind.svg'
-import { ReactComponent as SettingsSVG } from '@svg/settings.svg'
 import { ReactComponent as SkipBackSVG } from '@svg/skip-back.svg'
 import { ReactComponent as SkipForwardSVG } from '@svg/skip-forward.svg'
 import { ReactComponent as SquareSVG } from '@svg/square.svg'
+import { ReactComponent as XSVG } from '@svg/x.svg'
 
 const skipTimes = ['5', '10', '20', '30', '45', '60']
 
 const Actions: FC<{
   controls: Controls
   status?: Status
+  clearPlaylist: () => Promise<any>
   updateStatus: () => void
-}> = ({ controls, status, updateStatus }) => {
-  const [skipTime, setSkipTime] = useState(skipTimes[0])
+}> = ({ controls, status, clearPlaylist, updateStatus }) => {
+  const { lsSkipTime, lsStoreSkipTime } = useContext(LSCtx)
+  const [skipTime, setSkipTime] = useState(lsSkipTime)
 
   const updateSkipTime = useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
       const seconds = e.target.value
       setSkipTime(seconds)
+      lsStoreSkipTime?.(seconds)
     },
-    [setSkipTime]
+    [lsStoreSkipTime, setSkipTime]
   )
 
   const playIcon = {
@@ -53,8 +57,8 @@ const Actions: FC<{
         <FastForwardSVG />
       </button>
 
-      <button className="settg">
-        <SettingsSVG />
+      <button className="clear" onClick={() => clearPlaylist().then(updateStatus)}>
+        <XSVG />
       </button>
 
       <button

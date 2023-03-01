@@ -2,14 +2,16 @@ import React, { FC, useCallback, useContext, useEffect, useState } from 'react'
 import cx from 'classnames'
 
 import AppCtx from '@ctx/app.ctx'
+import LSCtx from '@ctx/ls.ctx'
 import UiCtx from '@ctx/ui.ctx'
 
 import { ReactComponent as ArrowUpSVG } from '@svg/arrow-up.svg'
 import { ReactComponent as ChevronLeftSVG } from '@svg/chevrons-left.svg'
 import { ReactComponent as ChevronRightSVG } from '@svg/chevrons-right.svg'
-import { ReactComponent as FolderSVG } from '@svg/folder.svg'
 import { ReactComponent as FolderPlusSVG } from '@svg/folder-plus.svg'
+import { ReactComponent as FolderSVG } from '@svg/folder.svg'
 import { ReactComponent as PlusSVG } from '@svg/plus.svg'
+import { ReactComponent as SaveSVG } from '@svg/save.svg'
 
 type ItemListType = {
   parent?: BrowserItem
@@ -120,9 +122,10 @@ const FileItem: FC<{
 }
 
 const FileBrowser: FC<{}> = () => {
-  const { DEFAULT_PATH, updatePlaylist, vlc } = useContext(AppCtx)
+  const { lsBrowserPath, lsStoreBrowserPath } = useContext(LSCtx)
+  const { updatePlaylist, vlc } = useContext(AppCtx)
   const { filebrowserIsOpen, toggleFileBrowserOpen } = useContext(UiCtx)
-  const [path, setPath] = useState(DEFAULT_PATH)
+  const [path, setPath] = useState(lsBrowserPath)
   const [itemList, setItemList] = useState<ItemListType>({
     dirs: [],
     files: [],
@@ -190,7 +193,7 @@ const FileBrowser: FC<{}> = () => {
       }
       updatePlaylist?.()
     })()
-  }, [updatePlaylist, vlc])
+  }, [itemList, updatePlaylist, vlc])
 
   return (
     <div id="filebrowser" className={cx({ '--visible': filebrowserIsOpen })}>
@@ -200,16 +203,19 @@ const FileBrowser: FC<{}> = () => {
       <div className="filebrowser__browser">
         <div className="filebrowser__actions">
           <Breadcrumbs browseTo={browseTo} path={path} />
-          <div>
+          <div className="filebrowser__buttons">
+            <button title="Make folder default" onClick={() => lsStoreBrowserPath?.(path)}>
+              <SaveSVG />
+            </button>
             {itemList.files?.length > 0 && (
               <button title="Add all files" onClick={addAllToPlaylist}>
                 <FolderPlusSVG />
               </button>
             )}
+            <button onClick={browseToParent}>
+              <ArrowUpSVG />
+            </button>
           </div>
-          <button onClick={browseToParent}>
-            <ArrowUpSVG />
-          </button>
         </div>
         <div className="filebrowser__items">
           {itemList.dirs.map((file, i) => (

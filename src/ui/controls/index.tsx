@@ -46,18 +46,12 @@ const Controls: FC<{}> = () => {
       <div className="controls__current">{status?.title}</div>
 
       <div className="controls__bars">
-        <Seek
-          seek={pos =>vlc.controls.seek(pos).then(updateStatus)}
-          time={status?.time}
-        />
+        <Seek seek={pos => vlc.controls.seek(pos).then(updateStatus)} time={status?.time} />
 
-        <Volume
-          vol={status?.volume ?? 0}
-          setVol={vol => vlc.controls.volume(vol).then(updateStatus)}
-        />
+        <Volume vol={status?.volume ?? 0} setVol={vol => vlc.controls.volume(vol).then(updateStatus)} />
       </div>
 
-      <Actions controls={vlc.controls} status={status} updateStatus={updateStatus} />
+      <Actions controls={vlc.controls} status={status} clearPlaylist={vlc.playlist.clear} updateStatus={updateStatus} />
     </section>
   )
 }

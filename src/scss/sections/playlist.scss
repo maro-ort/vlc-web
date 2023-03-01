@@ -24,23 +24,21 @@
 
       &.--current {
         border-left-color: var(--color-accent);
-        border-left-width: $gutter / 2;
+        border-left-width: math.div($gutter, 2);
         color: var(--color-accent);
         font-weight: bold;
-        padding-left: $gutter / 2;
+        padding-left: math.div($gutter, 2);
       }
 
       &-name {
-        @include hover(
-          var(--color-accent),
-          color
-        );
+        @include hover(var(--color-accent), color);
         cursor: pointer;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
         overflow: hidden;
         text-overflow: ellipsis;
+        transition: all 0.3s;
         white-space: nowrap;
       }
     }

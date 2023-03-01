@@ -1,11 +1,7 @@
 button,
 .button,
 select {
-  @include hover(
-    var(--color-accent),
-    border-color,
-    color
-  );
+  @include hover(var(--color-accent), border-color, color);
   align-items: center;
   background-color: transparent;
   border: 2px solid var(--color-light);
@@ -22,8 +18,6 @@ select {
   transition: all 0.3s;
   vertical-align: top;
   width: 2.5rem;
-
-
 }
 
 select {
@@ -75,10 +69,5 @@ input[type='range'] {
   }
   &::-webkit-slider-runnable-track {
     @include track();
-  }
-
-  &::-ms-fill-lower {
-  }
-  &::-ms-fill-upper {
   }
 }
