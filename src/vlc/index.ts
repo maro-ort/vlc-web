@@ -1,92 +1,91 @@
 import { browseData } from '@src/data/browse.data'
 
-const HOST = process.env.REACT_APP_VLC_HOST
-const PASSWORD = process.env.REACT_APP_VLC_PSSWD
-
-const sendCommand = async <T>(params: Record<string, string> = {}, path: string = 'status'): Promise<T> => {
-  const query = Object.entries(params)
-    .map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`)
-    .join('&')
-
-  return await fetch(`${HOST}/requests/${path}.json?${query}`, {
-    headers: {
-      Authorization: 'Basic ' + btoa(`:${PASSWORD}`),
-    },
-  }).then(r => r.json())
-}
+const HOST = process.env.NODE_ENV === 'development' ? process.env.REACT_APP_VLC_HOST : ''
 
 class Browser {
+  private readonly sendCommand
+  constructor(sendCommand: <T>(params: Record<string, string>, path?: string) => Promise<T>) {
+    this.sendCommand = sendCommand
+  }
+
   async dir(uri: string): Promise<BrowserItem[]> {
-    // return this.fakeDir(uri)
-    return await sendCommand<ResponseBrowserDir>({ dir: uri }, 'browse').then(({ element }) => element)
+    return this.sendCommand<ResponseBrowserDir>({ dir: uri }, 'browse').then(({ element }) => element)
   }
 
   async fakeDir(uri: string): Promise<BrowserItem[]> {
     const ResponseBrowserDirExample: ResponseBrowserDir = browseData[uri]
-    return await Promise.resolve(ResponseBrowserDirExample.element)
-    //.then(({ elements }))
+    return Promise.resolve(ResponseBrowserDirExample.element)
   }
 }
 
 export class Controls {
-  enqueueFile(uri: string): Promise<ResponseStatus> {
-    return sendCommand<ResponseStatus>({ command: 'in_enqueue', input: uri })
+  private readonly sendCommand
+  constructor(sendCommand: (params: Record<string, string>, path?: string) => Promise<any>) {
+    this.sendCommand = sendCommand
   }
 
-  loop(): void {
-    void sendCommand({ command: 'pl_loop' })
+  enqueueFile(uri: string): Promise<ResponseStatus> {
+    return this.sendCommand({ command: 'in_enqueue', input: uri })
+  }
+
+  loop(): Promise<ResponseStatus> {
+    return this.sendCommand({ command: 'pl_loop' })
   }
 
   fullscreen(): Promise<ResponseStatus> {
-    return sendCommand({ command: 'fullscreen' })
+    return this.sendCommand({ command: 'fullscreen' })
   }
 
   next(): Promise<ResponseStatus> {
-    return sendCommand({ command: 'pl_next' })
+    return this.sendCommand({ command: 'pl_next' })
   }
 
-  playFile(uri: string): void {
-    void sendCommand({ command: 'in_play', input: uri })
+  playFile(uri: string): Promise<ResponseStatus> {
+    return this.sendCommand({ command: 'in_play', input: uri })
   }
 
-  playItem(id: string): void {
-    void sendCommand({ command: 'pl_play', id })
+  playItem(id: string): Promise<ResponseStatus> {
+    return this.sendCommand({ command: 'pl_play', id })
   }
 
   prev(): Promise<ResponseStatus> {
-    return sendCommand({ command: 'pl_previous' })
+    return this.sendCommand({ command: 'pl_previous' })
   }
 
-  random(): void {
-    void sendCommand({ command: 'pl_random' })
+  random(): Promise<ResponseStatus> {
+    return this.sendCommand({ command: 'pl_random' })
   }
 
-  repeat(): void {
-    void sendCommand({ command: 'pl_repeat' })
+  repeat(): Promise<ResponseStatus> {
+    return this.sendCommand({ command: 'pl_repeat' })
   }
 
   volume(val: string): Promise<ResponseStatus> {
     // /^((\+|-)?\d+|\d+%?)$/ tests for ±vol or vol%
     // if (!/^((\+|-)?\d+|\d+%?)$/.test(val)) throw new Error(`Invalid value for volume: ${val}`)
-    return sendCommand({ command: 'volume', val })
+    return this.sendCommand({ command: 'volume', val })
   }
 
   seek(val: string): Promise<ResponseStatus> {
     // if (!/^((\+|-)?\d+|\d+%?)$/.test(val)) throw new Error(`Invalid value for seek: ${val}`)
-    return sendCommand({ command: 'seek', val })
+    return this.sendCommand({ command: 'seek', val })
   }
 
-  stop(): void {
-    void sendCommand({ command: 'pl_stop' })
+  stop(): Promise<ResponseStatus> {
+    return this.sendCommand({ command: 'pl_stop' })
   }
 
   togglePause(): Promise<ResponseStatus> {
-    return sendCommand({ command: 'pl_pause' })
+    return this.sendCommand({ command: 'pl_pause' })
   }
 }
 
 class Playlist {
   private readonly items: PlaylistItem[] = []
+  private readonly sendCommand
+  constructor(sendCommand: <T>(params: Record<string, string>, path?: string) => Promise<T>) {
+    this.sendCommand = sendCommand
+  }
 
   getItems(): PlaylistItem[] {
     return [...this.items]
@@ -96,19 +95,19 @@ class Playlist {
    * Commands
    */
   clear(): Promise<ResponseStatus> {
-    return sendCommand({ command: 'pl_empty' })
+    return this.sendCommand({ command: 'pl_empty' })
   }
 
   delete(id: string): Promise<ResponseStatus> {
-    return sendCommand({ command: 'pl_delete', id })
+    return this.sendCommand({ command: 'pl_delete', id })
   }
 
   play(id: string): Promise<ResponseStatus> {
-    return sendCommand({ command: 'pl_play', id })
+    return this.sendCommand({ command: 'pl_play', id })
   }
 
   async fetch(): Promise<PlaylistItem[]> {
-    return await sendCommand<any>({}, 'playlist').then(({ children }: { children: PlaylistSource[] }) => {
+    return this.sendCommand<ResponsePlaylist>({}, 'playlist').then(({ children }) => {
       const playlistSource = children.find(({ name }) => name === 'Playlist')
       if (playlistSource == null) throw new Error('Playlist not found')
       return playlistSource.children
@@ -117,23 +116,42 @@ class Playlist {
 
   async queue(uri: string | string[]): Promise<void> {
     if (typeof uri === 'string') uri = [uri]
-    for (const input of uri) await sendCommand({ command: 'in_enqueue', input })
+    for (const input of uri) await this.sendCommand({ command: 'in_enqueue', input })
   }
 }
 
 export default class VLC {
+  private readonly password
   public readonly browser
   public readonly controls
   public readonly playlist
 
-  constructor() {
-    this.browser = new Browser()
-    this.controls = new Controls()
-    this.playlist = new Playlist()
+  constructor(password: string) {
+    this.password = password
+    this.browser = new Browser(this.sendCommand.bind(this))
+    this.controls = new Controls(this.sendCommand.bind(this))
+    this.playlist = new Playlist(this.sendCommand.bind(this))
+  }
+
+  sendCommand<T>(params: Record<string, string> = {}, path: string = 'status'): Promise<T> {
+    const query = Object.entries(params)
+      .map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`)
+      .join('&')
+
+    return fetch(`${HOST}/requests/${path}.json?${query}`, {
+      headers: {
+        Authorization: 'Basic ' + btoa(`:${this.password}`),
+      },
+    })
+      .then(r => {
+        if (!r.ok) throw new Error(r.status.toFixed())
+        return r
+      })
+      .then(r => r.json())
   }
 
   async status(): Promise<Status> {
-    return await sendCommand().then(r => {
+    return this.sendCommand().then(r => {
       const { length, time, position, state, volume, information, fullscreen, loop, random, repeat } =
         r as ResponseStatus
       const { meta } = information?.category || {}

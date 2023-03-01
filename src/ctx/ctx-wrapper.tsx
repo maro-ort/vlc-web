@@ -2,13 +2,16 @@ import React, { FC } from 'react'
 
 import { AppProvider } from '@ctx/app.ctx'
 import { UiProvider } from '@ctx/ui.ctx'
-import { LSProvider } from './ls.ctx'
+import { LSProvider } from '@ctx/ls.ctx'
+import { ConnectionProvider } from '@ctx/connection.ctx'
 
 const CtxWrapper: FC<{ children: React.ReactNode }> = ({ children }) => (
   <LSProvider>
-    <AppProvider>
-      <UiProvider>{children}</UiProvider>
-    </AppProvider>
+    <ConnectionProvider>
+      <AppProvider>
+        <UiProvider>{children}</UiProvider>
+      </AppProvider>
+    </ConnectionProvider>
   </LSProvider>
 )
 

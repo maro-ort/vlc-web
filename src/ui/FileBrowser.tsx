@@ -135,7 +135,7 @@ const FileBrowser: FC<{}> = () => {
     (path: string) => {
       setPath(path)
 
-      void vlc.browser
+      void vlc?.browser
         .dir(path)
         .then(f => f.sort((a, b) => (a.type === b.type ? a.name.localeCompare(b.name) : a.type.localeCompare(b.type))))
         .then(f =>
@@ -151,26 +151,28 @@ const FileBrowser: FC<{}> = () => {
         )
         .then(setItemList)
     },
-    [vlc.browser]
+    [vlc]
   )
 
   const getDirInfo = useCallback(
     (path: string): Promise<DirInfoType | undefined> => {
-      return vlc.browser
-        .dir(path)
-        .then(f =>
-          f.reduce(
-            (acc, { type }) => {
-              if (type === 'dir') acc.dirs++
-              else if (type === 'file') acc.files++
-              return acc
-            },
-            { dirs: -1, files: 0 }
-          )
-        )
-        .catch(() => undefined)
+      return vlc
+        ? vlc.browser
+            .dir(path)
+            .then(f =>
+              f.reduce(
+                (acc, { type }) => {
+                  if (type === 'dir') acc.dirs++
+                  else if (type === 'file') acc.files++
+                  return acc
+                },
+                { dirs: -1, files: 0 }
+              )
+            )
+            .catch(() => undefined)
+        : Promise.resolve(undefined)
     },
-    [vlc.browser]
+    [vlc]
   )
 
   const browseToParent = useCallback(() => {
@@ -182,14 +184,14 @@ const FileBrowser: FC<{}> = () => {
   useEffect(() => browseTo(path), [])
 
   const addToPlaylist = useCallback(
-    (item: BrowserItem) => vlc.controls.enqueueFile(item.uri).then(() => updatePlaylist?.()),
+    (item: BrowserItem) => vlc?.controls.enqueueFile(item.uri).then(() => updatePlaylist?.()),
     [updatePlaylist, vlc]
   )
 
   const addAllToPlaylist = useCallback(() => {
     ;(async () => {
       for (const item of itemList.files) {
-        await vlc.controls.enqueueFile(item.uri)
+        await vlc?.controls.enqueueFile(item.uri)
       }
       updatePlaylist?.()
     })()

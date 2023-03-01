@@ -1,22 +1,23 @@
-import React, { createContext, FC, useCallback, useEffect, useMemo, useState } from 'react'
+import React, { createContext, FC, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 
 import VLC from '@vlc/index'
+import ConnectionCtx from './connection.ctx'
 
 const AppCtx = createContext<{
-  vlc: VLC
+  vlc?: VLC
   currentPlaylist: PlaylistItem[]
   updatePlaylist?: () => void
 }>({
-  vlc: new VLC(),
   currentPlaylist: [],
 })
 
 const AppProvider: FC<{ children: React.ReactNode }> = ({ children }) => {
-  const vlc = useMemo(() => new VLC(), [])
+  const { vlcPassword } = useContext(ConnectionCtx)
+  const vlc = useMemo(() => (vlcPassword ? new VLC(vlcPassword) : undefined), [vlcPassword])
   const [currentPlaylist, setCurrentPlaylist] = useState<PlaylistItem[]>([])
 
   const updatePlaylist = useCallback(() => {
-    vlc.playlist.fetch().then(setCurrentPlaylist)
+    vlc?.playlist.fetch().then(setCurrentPlaylist)
   }, [vlc, setCurrentPlaylist])
 
   useEffect(() => {

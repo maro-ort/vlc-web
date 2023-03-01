@@ -14,7 +14,7 @@ const Controls: FC<{}> = () => {
   const [title, setTitle] = useState<string>()
 
   const updateStatus = useCallback(() => {
-    vlc.status().then(setStatus)
+    vlc?.status().then(setStatus)
   }, [vlc])
 
   // updateStatus()
@@ -39,6 +39,8 @@ const Controls: FC<{}> = () => {
     setTitle(newTitle)
   }, [status?.state, status?.title])
 
+  if (!vlc) return <></>
+
   return (
     <section id="controls">
       <Helmet title={title} />
@@ -46,9 +48,9 @@ const Controls: FC<{}> = () => {
       <div className="controls__current">{status?.title}</div>
 
       <div className="controls__bars">
-        <Seek seek={pos => vlc.controls.seek(pos).then(updateStatus)} time={status?.time} />
+        <Seek seek={pos => vlc?.controls.seek(pos).then(updateStatus)} time={status?.time} />
 
-        <Volume vol={status?.volume ?? 0} setVol={vol => vlc.controls.volume(vol).then(updateStatus)} />
+        <Volume vol={status?.volume ?? 0} setVol={vol => vlc?.controls.volume(vol).then(updateStatus)} />
       </div>
 
       <Actions controls={vlc.controls} status={status} clearPlaylist={vlc.playlist.clear} updateStatus={updateStatus} />

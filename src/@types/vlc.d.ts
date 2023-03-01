@@ -14,12 +14,6 @@ interface PlaylistItem {
   current?: 'current'
 }
 
-interface PlaylistSource {
-  id: string
-  name: string
-  children: PlaylistItem[]
-}
-
 interface Status {
   title: string
   time: {
@@ -55,6 +49,18 @@ interface ResponseBrowserDirSingleItem extends BrowserItem {
   gid: number
   mode: number
   uid: number
+}
+
+interface ResponsePlaylist {
+  id: string
+  name: string
+  children: [
+    {
+      id: string
+      name: string
+      children: PlaylistItem[]
+    }
+  ]
 }
 
 interface ResponseStatus {

@@ -14,6 +14,7 @@ import { ReactComponent as SkipBackSVG } from '@svg/skip-back.svg'
 import { ReactComponent as SkipForwardSVG } from '@svg/skip-forward.svg'
 import { ReactComponent as SquareSVG } from '@svg/square.svg'
 import { ReactComponent as XSVG } from '@svg/x.svg'
+import AppCtx from '@ctx/app.ctx'
 
 const skipTimes = ['5', '10', '20', '30', '45', '60']
 
@@ -24,6 +25,7 @@ const Actions: FC<{
   updateStatus: () => void
 }> = ({ controls, status, clearPlaylist, updateStatus }) => {
   const { lsSkipTime, lsStoreSkipTime } = useContext(LSCtx)
+  const { updatePlaylist } = useContext(AppCtx)
   const [skipTime, setSkipTime] = useState(lsSkipTime)
 
   const updateSkipTime = useCallback(
@@ -50,33 +52,34 @@ const Actions: FC<{
           </option>
         ))}
       </select>
-      <button className="skipB" onClick={() => controls.seek('-' + skipTime).then(updateStatus)}>
+      <button className="skipB" title="Skip backwards" onClick={() => controls.seek('-' + skipTime).then(updateStatus)}>
         <RewindSVG />
       </button>
-      <button className="skipF" onClick={() => controls.seek('+' + skipTime).then(updateStatus)}>
+      <button className="skipF" title="Skip forward" onClick={() => controls.seek('+' + skipTime).then(updateStatus)}>
         <FastForwardSVG />
       </button>
 
-      <button className="clear" onClick={() => clearPlaylist().then(updateStatus)}>
+      <button className="clear" title="Clear playlist" onClick={() => clearPlaylist().then(updateStatus)}>
         <XSVG />
       </button>
 
       <button
         className={cx('fulls', { '--active': status?.options.fullscreen })}
+        title="Fullscreen"
         onClick={() => controls.fullscreen().then(updateStatus)}
       >
         {status?.options.fullscreen ? <MinimizeSVG /> : <MaximizeSVG />}
       </button>
 
-      <button className="prev" onClick={() => controls.prev().then(updateStatus)}>
+      <button className="prev" title="Previous" onClick={() => controls.prev().then(updateStatus).then(updatePlaylist)}>
         <SkipBackSVG />
       </button>
 
-      <button className="next" onClick={() => controls.next().then(updateStatus)}>
+      <button className="next" title="Next" onClick={() => controls.next().then(updateStatus).then(updatePlaylist)}>
         <SkipForwardSVG />
       </button>
 
-      <button className="play" onClick={() => controls.togglePause().then(updateStatus)}>
+      <button className="play" title="Toggle play" onClick={() => controls.togglePause().then(updateStatus)}>
         {playIcon}
       </button>
     </div>
