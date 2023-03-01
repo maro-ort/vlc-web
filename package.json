@@ -21,7 +21,7 @@
   },
   "scripts": {
     "start": "BROWSER=none craco start",
-    "proxy": "lcp --proxyUrl http://caixo.aumon:8080",
+    "proxy": "lcp --proxyUrl http://localhost:8080",
     "build": "craco build",
     "test": "craco test"
   },

@@ -1,6 +1,7 @@
-import { FC, useCallback, useContext, useState } from 'react'
+import { Dispatch, FC, SetStateAction, useCallback, useContext } from 'react'
 import cx from 'classnames'
 
+import AppCtx from '@ctx/app.ctx'
 import LSCtx from '@ctx/ls.ctx'
 import { Controls } from '@src/vlc'
 
@@ -14,19 +15,19 @@ import { ReactComponent as SkipBackSVG } from '@svg/skip-back.svg'
 import { ReactComponent as SkipForwardSVG } from '@svg/skip-forward.svg'
 import { ReactComponent as SquareSVG } from '@svg/square.svg'
 import { ReactComponent as XSVG } from '@svg/x.svg'
-import AppCtx from '@ctx/app.ctx'
 
 const skipTimes = ['5', '10', '20', '30', '45', '60']
 
 const Actions: FC<{
   controls: Controls
   status?: Status
+  skipTime: string
   clearPlaylist: () => Promise<any>
   updateStatus: () => void
-}> = ({ controls, status, clearPlaylist, updateStatus }) => {
-  const { lsSkipTime, lsStoreSkipTime } = useContext(LSCtx)
+  setSkipTime: Dispatch<SetStateAction<string>>
+}> = ({ controls, status, clearPlaylist, updateStatus, skipTime, setSkipTime }) => {
+  const { lsStoreSkipTime } = useContext(LSCtx)
   const { updatePlaylist } = useContext(AppCtx)
-  const [skipTime, setSkipTime] = useState(lsSkipTime)
 
   const updateSkipTime = useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {

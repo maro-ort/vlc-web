@@ -2,6 +2,7 @@ import React, { FC, useCallback, useContext, useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 
 import AppCtx from '@ctx/app.ctx'
+import LSCtx from '@ctx/ls.ctx'
 
 import Actions from '@ui/controls/Actions'
 import Volume from '@ui/controls/Volume'
@@ -9,9 +10,11 @@ import Seek from '@ui/controls/Seek'
 
 const Controls: FC<{}> = () => {
   const { vlc } = useContext(AppCtx)
+  const { lsSkipTime } = useContext(LSCtx)
   const [status, setStatus] = useState<Status>()
   const [updateStatusDelay, setUpdateStatusDelay] = useState(1000)
   const [title, setTitle] = useState<string>()
+  const [skipTime, setSkipTime] = useState(lsSkipTime)
 
   const updateStatus = useCallback(() => {
     vlc?.status().then(setStatus)
@@ -39,6 +42,30 @@ const Controls: FC<{}> = () => {
     setTitle(newTitle)
   }, [status?.state, status?.title])
 
+  // Keybindings
+  useEffect(() => {
+    const keyDetect = (e: KeyboardEvent) => {
+      const { code } = e
+      const actions = {
+        ArrowDown: () => vlc?.controls.volume('-10').then(updateStatus),
+        ArrowLeft: () => vlc?.controls.seek('-' + skipTime).then(updateStatus),
+        ArrowRight: () => vlc?.controls.seek('+' + skipTime).then(updateStatus),
+        ArrowUp: () => vlc?.controls.volume('+10').then(updateStatus),
+        Space: () => vlc?.controls.togglePause().then(updateStatus),
+      } as Record<string, () => void>
+
+      if (code in actions) {
+        e.preventDefault()
+        actions[code]()
+      }
+    }
+    document.addEventListener('keydown', keyDetect)
+
+    return () => {
+      document.removeEventListener('keydown', keyDetect)
+    }
+  }, [skipTime, updateStatus, vlc])
+
   if (!vlc) return <></>
 
   return (
@@ -53,7 +80,14 @@ const Controls: FC<{}> = () => {
         <Volume vol={status?.volume ?? 0} setVol={vol => vlc?.controls.volume(vol).then(updateStatus)} />
       </div>
 
-      <Actions controls={vlc.controls} status={status} clearPlaylist={vlc.playlist.clear} updateStatus={updateStatus} />
+      <Actions
+        controls={vlc.controls}
+        status={status}
+        clearPlaylist={vlc.playlist.clear}
+        updateStatus={updateStatus}
+        skipTime={skipTime}
+        setSkipTime={setSkipTime}
+      />
     </section>
   )
 }
