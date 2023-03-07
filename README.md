@@ -1,6 +1,8 @@
 # Replacement VLC web interface
 
-This is a personal and not finished project. It tries to create a React interface with Typescript to replace the default one.
+This is a personal project. It replaces the default Web interface for VLC as the UI/UX is terrible and more for mobile devices.
+
+The new interfaces uses a Responsive Design and is built using React/Typescript. It simplifies the usage of the application reducing to about a third how many clicks are needed to browse and add media. It also uses LocalStorage to store basic settings and avoid autorization requests to the user.
 
 ## How to run
 
@@ -11,8 +13,8 @@ Rename `.env.template` and set the VLC password, the `VLC_HOST` is already set t
 Run with `yarn start` and open in your favourite browser.
 
 ## TODO
- * Refactor some VLC context status to reduce API calls
- * Make UI properly adapt for small screens
- * Store interface configuration to LocalStorage
- * Create SVGs for buttons
+ * ~~Refactor some VLC context status to reduce API calls~~
+ * ~~Make UI properly adapt for small screens~~
+ * ~~Store interface configuration to LocalStorage~~
+ * ~~Create SVGs for buttons~~
  * Many other improvements
