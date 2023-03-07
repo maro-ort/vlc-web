@@ -17,4 +17,5 @@ Run with `yarn start` and open in your favourite browser.
  * ~~Make UI properly adapt for small screens~~
  * ~~Store interface configuration to LocalStorage~~
  * ~~Create SVGs for buttons~~
+ * ~~Added keyboard bindings~~
  * Many other improvements
