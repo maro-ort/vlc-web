@@ -3,7 +3,8 @@
   touch-action: manipulation;
 
   @media (hover: hover) {
-    &:hover {
+    &:hover,
+    &:hover * {
       @each $property in $properties {
         #{$property}: $value;
       }
@@ -11,13 +12,13 @@
   }
 
   @media (hover: none) {
-    &:active {
+    &:active,
+    &:active * {
       @each $property in $properties {
         #{$property}: $value;
       }
     }
   }
-
 }
 
 @mixin no-select {
