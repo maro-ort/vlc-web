@@ -11,13 +11,14 @@
     top: 0;
 
     .filebrowser__browser {
-      display: block;
+      display: flex;
     }
   }
 
   .filebrowser {
     &__browser {
       display: none;
+      flex-direction: column;
       width: 100%;
     }
 
@@ -57,6 +58,7 @@
     }
 
     &__current {
+      @include hover(var(--color-accent), border-color, color);
       font-size: 1.5em;
       word-wrap: anywhere;
     }

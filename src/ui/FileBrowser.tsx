@@ -58,7 +58,9 @@ const Breadcrumbs: FC<{ path: string; browseTo: (path: string) => void }> = ({ p
               </>
             ))}
       </div>
-      <div className="filebrowser__current">{current}</div>
+      <div className="filebrowser__current" onClick={() => browseTo(path)}>
+        {current}
+      </div>
     </div>
   )
 }
