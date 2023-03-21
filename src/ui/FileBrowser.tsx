@@ -115,7 +115,7 @@ const FileItem: FC<{
         {extension && <div className="filebrowser__item-ext">{extension}</div>}
       </div>
       <div>
-        <button onClick={() => addToPlaylist(file)} title={`Add ${file.name} to pplaylist`}>
+        <button onClick={() => addToPlaylist(file)} title={`Add ${file.name} to Playlist`}>
           <PlusSVG />
         </button>
       </div>
@@ -137,8 +137,8 @@ const FileBrowser: FC<{}> = () => {
     (path: string) => {
       setPath(path)
 
-      void vlc?.browser
-        .dir(path)
+      void vlc
+        ?.dir(path)
         .then(f => f.sort((a, b) => (a.type === b.type ? a.name.localeCompare(b.name) : a.type.localeCompare(b.type))))
         .then(f =>
           f.reduce(
@@ -158,21 +158,21 @@ const FileBrowser: FC<{}> = () => {
 
   const getDirInfo = useCallback(
     (path: string): Promise<DirInfoType | undefined> => {
-      return vlc
-        ? vlc.browser
-            .dir(path)
-            .then(f =>
-              f.reduce(
-                (acc, { type }) => {
-                  if (type === 'dir') acc.dirs++
-                  else if (type === 'file') acc.files++
-                  return acc
-                },
-                { dirs: -1, files: 0 }
-              )
+      return (
+        vlc
+          ?.dir(path)
+          .then(f =>
+            f.reduce(
+              (acc, { type }) => {
+                if (type === 'dir') acc.dirs++
+                else if (type === 'file') acc.files++
+                return acc
+              },
+              { dirs: -1, files: 0 }
             )
-            .catch(() => undefined)
-        : Promise.resolve(undefined)
+          )
+          .catch(() => undefined) || Promise.resolve(undefined)
+      )
     },
     [vlc]
   )
@@ -186,17 +186,12 @@ const FileBrowser: FC<{}> = () => {
   useEffect(() => browseTo(path), [])
 
   const addToPlaylist = useCallback(
-    (item: BrowserItem) => vlc?.controls.enqueueFile(item.uri).then(() => updatePlaylist?.()),
+    (item: BrowserItem) => vlc?.queue(item.uri).then(() => updatePlaylist?.()),
     [updatePlaylist, vlc]
   )
 
   const addAllToPlaylist = useCallback(() => {
-    ;(async () => {
-      for (const item of itemList.files) {
-        await vlc?.controls.enqueueFile(item.uri)
-      }
-      updatePlaylist?.()
-    })()
+    vlc?.queue(itemList.files.map(({ uri }) => uri)).then(updatePlaylist)
   }, [itemList, updatePlaylist, vlc])
 
   return (

@@ -47,11 +47,11 @@ const Controls: FC<{}> = () => {
     const keyDetect = (e: KeyboardEvent) => {
       const { code } = e
       const actions = {
-        ArrowDown: () => vlc?.controls.volume('-10').then(updateStatus),
-        ArrowLeft: () => vlc?.controls.seek('-' + skipTime).then(updateStatus),
-        ArrowRight: () => vlc?.controls.seek('+' + skipTime).then(updateStatus),
-        ArrowUp: () => vlc?.controls.volume('+10').then(updateStatus),
-        Space: () => vlc?.controls.togglePause().then(updateStatus),
+        ArrowDown: () => vlc?.volume('-10').then(updateStatus),
+        ArrowLeft: () => vlc?.seek('-' + skipTime).then(updateStatus),
+        ArrowRight: () => vlc?.seek('+' + skipTime).then(updateStatus),
+        ArrowUp: () => vlc?.volume('+10').then(updateStatus),
+        Space: () => vlc?.togglePause().then(updateStatus),
       } as Record<string, () => void>
 
       if (code in actions) {
@@ -75,19 +75,12 @@ const Controls: FC<{}> = () => {
       <div className="controls__current">{status?.title}</div>
 
       <div className="controls__bars">
-        <Seek seek={pos => vlc?.controls.seek(pos).then(updateStatus)} time={status?.time} />
+        <Seek seek={pos => vlc?.seek(pos).then(updateStatus)} time={status?.time} />
 
-        <Volume vol={status?.volume ?? 0} setVol={vol => vlc?.controls.volume(vol).then(updateStatus)} />
+        <Volume vol={status?.volume ?? 0} setVol={vol => vlc?.volume(vol).then(updateStatus)} />
       </div>
 
-      <Actions
-        controls={vlc.controls}
-        status={status}
-        clearPlaylist={vlc.playlist.clear}
-        updateStatus={updateStatus}
-        skipTime={skipTime}
-        setSkipTime={setSkipTime}
-      />
+      <Actions vlc={vlc} status={status} updateStatus={updateStatus} skipTime={skipTime} setSkipTime={setSkipTime} />
     </section>
   )
 }

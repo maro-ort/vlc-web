@@ -3,7 +3,7 @@ import cx from 'classnames'
 
 import AppCtx from '@ctx/app.ctx'
 import LSCtx from '@ctx/ls.ctx'
-import { Controls } from '@src/vlc'
+import VLC from '@src/vlc'
 
 import { ReactComponent as FastForwardSVG } from '@svg/fast-forward.svg'
 import { ReactComponent as MaximizeSVG } from '@svg/maximize.svg'
@@ -19,13 +19,12 @@ import { ReactComponent as XSVG } from '@svg/x.svg'
 const skipTimes = ['5', '10', '20', '30', '45', '60']
 
 const Actions: FC<{
-  controls: Controls
+  vlc: VLC
   status?: Status
   skipTime: string
-  clearPlaylist: () => Promise<any>
   updateStatus: () => void
   setSkipTime: Dispatch<SetStateAction<string>>
-}> = ({ controls, status, clearPlaylist, updateStatus, skipTime, setSkipTime }) => {
+}> = ({ vlc, status, updateStatus, skipTime, setSkipTime }) => {
   const { lsStoreSkipTime } = useContext(LSCtx)
   const { updatePlaylist } = useContext(AppCtx)
 
@@ -53,34 +52,34 @@ const Actions: FC<{
           </option>
         ))}
       </select>
-      <button className="skipB" title="Skip backwards" onClick={() => controls.seek('-' + skipTime).then(updateStatus)}>
+      <button className="skipB" title="Skip backwards" onClick={() => vlc.seek('-' + skipTime).then(updateStatus)}>
         <RewindSVG />
       </button>
-      <button className="skipF" title="Skip forward" onClick={() => controls.seek('+' + skipTime).then(updateStatus)}>
+      <button className="skipF" title="Skip forward" onClick={() => vlc.seek('+' + skipTime).then(updateStatus)}>
         <FastForwardSVG />
       </button>
 
-      <button className="clear" title="Clear playlist" onClick={() => clearPlaylist().then(updateStatus)}>
+      <button className="clear" title="Clear playlist" onClick={() => vlc.clearPlaylist().then(updateStatus)}>
         <XSVG />
       </button>
 
       <button
         className={cx('fulls', { '--active': status?.options.fullscreen })}
         title="Fullscreen"
-        onClick={() => controls.fullscreen().then(updateStatus)}
+        onClick={() => vlc.fullscreen().then(updateStatus)}
       >
         {status?.options.fullscreen ? <MinimizeSVG /> : <MaximizeSVG />}
       </button>
 
-      <button className="prev" title="Previous" onClick={() => controls.prev().then(updateStatus).then(updatePlaylist)}>
+      <button className="prev" title="Previous" onClick={() => vlc.prev().then(updateStatus).then(updatePlaylist)}>
         <SkipBackSVG />
       </button>
 
-      <button className="next" title="Next" onClick={() => controls.next().then(updateStatus).then(updatePlaylist)}>
+      <button className="next" title="Next" onClick={() => vlc.next().then(updateStatus).then(updatePlaylist)}>
         <SkipForwardSVG />
       </button>
 
-      <button className="play" title="Toggle play" onClick={() => controls.togglePause().then(updateStatus)}>
+      <button className="play" title="Toggle play" onClick={() => vlc.togglePause().then(updateStatus)}>
         {playIcon}
       </button>
     </div>

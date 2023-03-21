@@ -17,7 +17,7 @@ const AppProvider: FC<{ children: React.ReactNode }> = ({ children }) => {
   const [currentPlaylist, setCurrentPlaylist] = useState<PlaylistItem[]>([])
 
   const updatePlaylist = useCallback(() => {
-    vlc?.playlist.fetch().then(setCurrentPlaylist)
+    vlc?.fetchPlaylist().then(setCurrentPlaylist)
   }, [vlc, setCurrentPlaylist])
 
   useEffect(() => {

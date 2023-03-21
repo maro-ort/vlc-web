@@ -28,9 +28,9 @@ const Item: FC<{
 const Playlist: FC<{}> = () => {
   const { vlc, currentPlaylist, updatePlaylist } = useContext(AppCtx)
 
-  const playItem = useCallback((id: string) => vlc?.playlist.play(id).then(updatePlaylist), [updatePlaylist, vlc])
+  const playItem = useCallback((id: string) => vlc?.playItem(id).then(updatePlaylist), [updatePlaylist, vlc])
 
-  const removeItem = useCallback((id: string) => vlc?.playlist.delete(id).then(updatePlaylist), [updatePlaylist, vlc])
+  const removeItem = useCallback((id: string) => vlc?.removeItem(id).then(updatePlaylist), [updatePlaylist, vlc])
 
   return (
     <section id="playlist">
