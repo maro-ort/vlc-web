@@ -1,6 +1,0 @@
-#volume {
-  align-items: center;
-  display: grid;
-  grid-gap: math.div($gutter, 2);
-  grid-template-columns: fit-content(100%) fit-content(100%) 1fr;
-}
