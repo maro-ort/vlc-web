@@ -1,9 +1,9 @@
 import React, { createContext, use, useCallback, useEffect, useState } from 'react'
 import { useLS } from '@ctx'
 import VLCApi from '@vlc'
+import Password from '@ui/Password/Password'
 import type { PropsWithChildren } from 'react'
 import type { ConntectionContext } from './types'
-// import Password from '@src/ui/Password'
 
 const ConnectionCtx = createContext<ConntectionContext>({
   vlcPassword: undefined,
@@ -46,8 +46,7 @@ function ConnectionProvider ({ children }: PropsWithChildren): React.JSX.Element
   )
 
   if (!hasConnection) {
-    return <></>
-    // return <Password lsPassword={lsPassword} testPassword={testPassword} />
+    return <Password lsPassword={lsPassword} testPassword={testPassword} />
   }
 
   const value = {
