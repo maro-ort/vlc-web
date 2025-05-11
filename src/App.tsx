@@ -1,4 +1,5 @@
 import CtxWrapper from './ctx/CtxWrapper'
+import Controls from '@ui/Controls/Controls'
 import FileBrowser from '@ui/FileBrowser/FileBrowser'
 import Playlist from '@ui/Playlist/Playlist'
 import './scss/main.scss'
@@ -10,6 +11,7 @@ function App (): React.JSX.Element {
         <Playlist />
         <FileBrowser />
       </section>
+      <Controls />
     </CtxWrapper>
   )
 }
