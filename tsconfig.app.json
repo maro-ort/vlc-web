@@ -18,6 +18,15 @@
 
     /* Linting */
     "strict": true,
+
+    /* Paths */
+    "paths": {
+      "@ctx": ["./src/ctx/index.ts"],
+      "@types": ["./src/@types/types.ts"],
+      "@ui/*": ["./src/ui/*"],
+      "@utils/*": ["./src/utils/*"],
+      "@vlc": ["./src/VLCApi/VLCApi.ts"]
+    }
   },
   "include": ["src"]
 }
