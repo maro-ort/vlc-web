@@ -6,13 +6,9 @@ import eslintConfigLove from 'eslint-config-love'
 import stylistic from '@stylistic/eslint-plugin'
 
 export default [
+  { ignores: ['dist/'] },
   {
-    ignores: ['dist/'],
-  },
-  {
-    plugins: {
-      '@stylistic': stylistic,
-    },
+    plugins: { '@stylistic': stylistic },
     ...stylistic.configs.recommended,
   },
   pluginJs.configs.recommended,
@@ -27,19 +23,15 @@ export default [
     languageOptions: {
       globals: globals.browser,
       parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
-        },
+        ecmaFeatures: { jsx: true },
         projectService: true,
       },
     },
     settings: {
-      react: {
-        version: 'detect',
-      },
+      react: { version: 'detect' },
     },
     rules: {
-      "@stylistic/jsx-one-expression-per-line": 'off',
+      '@stylistic/jsx-one-expression-per-line': 'off',
       '@stylistic/array-bracket-newline': ['error', { multiline: true }],
       '@stylistic/array-element-newline': ['error', { consistent: true, multiline: true }],
       '@stylistic/arrow-spacing': ['error', { before: true, after: true }],
@@ -47,24 +39,47 @@ export default [
       '@stylistic/brace-style': ['error', '1tbs', { allowSingleLine: true }],
       '@stylistic/eol-last': ['error', 'always'],
       '@stylistic/jsx-quotes': ['error', 'prefer-single'],
-      '@stylistic/jsx-wrap-multilines': ['error', { 'declaration': 'parens-new-line', 'assignment': 'parens-new-line', 'return': 'parens-new-line', 'arrow': 'parens-new-line', 'condition': 'parens-new-line', 'logical': 'parens-new-line', 'prop': 'parens-new-line', 'propertyValue': 'parens-new-line' }],
+      '@stylistic/jsx-wrap-multilines': [
+        'error',
+        {
+          declaration: 'parens-new-line',
+          assignment: 'parens-new-line',
+          return: 'parens-new-line',
+          arrow: 'parens-new-line',
+          condition: 'parens-new-line',
+          logical: 'parens-new-line',
+          prop: 'parens-new-line',
+          propertyValue: 'parens-new-line',
+        },
+      ],
       '@stylistic/key-spacing': ['error', { beforeColon: false, afterColon: true }],
       '@stylistic/keyword-spacing': ['error', { before: true, after: true }],
+      '@stylistic/max-len': ['error', 100],
       '@stylistic/max-statements-per-line': ['error', { max: 2 }],
-      '@stylistic/member-delimiter-style': ['error', { 'multiline': { 'delimiter': 'none' }, 'singleline': { 'delimiter': 'comma' } }],
+      '@stylistic/member-delimiter-style': [
+        'error',
+        { multiline: { delimiter: 'none' }, singleline: { delimiter: 'comma' } },
+      ],
       '@stylistic/no-trailing-spaces': 'error',
       '@stylistic/object-curly-newline': ['error', { consistent: true, multiline: true }],
       '@stylistic/object-curly-spacing': ['error', 'always'],
       '@stylistic/object-property-newline': ['error', { allowAllPropertiesOnSameLine: true }],
       '@stylistic/operator-linebreak': ['error', 'before', { overrides: { '=': 'after' } }],
-      '@stylistic/quote-props': ['error', 'as-needed', { keywords: false, unnecessary: true, numbers: true }],
+      '@stylistic/quote-props': [
+        'error',
+        'as-needed',
+        { keywords: false, unnecessary: true, numbers: true },
+      ],
       '@stylistic/quotes': ['error', 'single'],
       '@stylistic/semi': ['error', 'never'],
       '@stylistic/space-before-blocks': ['error', 'always'],
       '@stylistic/space-before-function-paren': ['error', 'always'],
       '@stylistic/space-infix-ops': ['error', { int32Hint: false }],
       '@stylistic/type-annotation-spacing': 'error',
-      '@typescript-eslint/consistent-type-imports': ['error', { fixStyle: 'separate-type-imports' }],
+      '@typescript-eslint/consistent-type-imports': [
+        'error',
+        { fixStyle: 'separate-type-imports' },
+      ],
       '@typescript-eslint/init-declarations': 'off',
       '@typescript-eslint/max-params': ['error', { max: 3 }],
       '@typescript-eslint/no-magic-numbers': 'off',
@@ -76,8 +91,8 @@ export default [
       '@typescript-eslint/prefer-destructuring': 'off',
       '@typescript-eslint/switch-exhaustiveness-check': 'off',
       'arrow-body-style': 'off',
-      'complexity': 'off',
-      'eqeqeq': ['error', 'always', { null: 'ignore' }],
+      complexity: 'off',
+      eqeqeq: ['error', 'always', { null: 'ignore' }],
       'eslint-comments/require-description': 'off',
       'max-lines': 'off',
       'max-nested-callbacks': ['error', 5],
@@ -88,11 +103,17 @@ export default [
       'no-multiple-empty-lines': ['error', { max: 1, maxBOF: 0 }],
       'no-negated-condition': 'off',
       'no-param-reassign': 'off',
-      'no-unused-vars': ['error', { argsIgnorePattern: '^_', caughtErrorsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
+      'no-unused-vars': [
+        'error',
+        { argsIgnorePattern: '^_', caughtErrorsIgnorePattern: '^_', varsIgnorePattern: '^_' },
+      ],
       'preserve-caught-error': ['error', { requireCatchParameter: true }],
       'promise/avoid-new': 'off',
-      'radix': ['error', 'as-needed'],
-      'react/function-component-definition': ['error', { namedComponents: 'function-declaration', unnamedComponents: 'arrow-function' }],
+      radix: ['error', 'as-needed'],
+      'react/function-component-definition': [
+        'error',
+        { namedComponents: 'function-declaration', unnamedComponents: 'arrow-function' },
+      ],
       'react/jsx-curly-spacing': ['error', { when: 'never', children: true }],
       'react/jsx-first-prop-new-line': ['error', 'multiline'],
       'react/jsx-tag-spacing': ['error', { beforeSelfClosing: 'always', beforeClosing: 'never' }],
@@ -100,6 +121,5 @@ export default [
       'react/react-in-jsx-scope': 'off',
       'react/self-closing-comp': ['error', { html: true, component: true }],
     },
-  }
+  },
 ]
-
